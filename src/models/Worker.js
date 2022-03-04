@@ -77,7 +77,9 @@ workerSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id }, "demo3project");
   user.tokens = user.tokens.concat({ token });
+
   await user.save();
+
   return token;
 };
 

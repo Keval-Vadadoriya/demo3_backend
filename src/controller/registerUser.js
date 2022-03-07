@@ -7,10 +7,14 @@ const registerUser = async (req, res) => {
   try {
     let user;
 
-    if (req.body.profession) {
+    if (req.query.role === "worker") {
       user = new Worker(req.body);
+
+      //adding worker to review
       const review = new Review({ worker: user._id });
       await review.save();
+
+      //adding worker to profession
       let profession = await Profession.findOne({
         profession: req.body.profession,
       });
@@ -30,11 +34,11 @@ const registerUser = async (req, res) => {
     }
 
     user = await user.hashPswd();
-
+    await user.save();
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({ Error: e.message });
   }
 };
 

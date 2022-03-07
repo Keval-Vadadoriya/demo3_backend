@@ -9,8 +9,8 @@ const workerSchema = mongoose.Schema({
     required: true,
   },
   email: {
-    type: String,
     unique: true,
+    type: String,
     required: true,
     // toLowercase:true,
     validate(value) {
@@ -33,18 +33,24 @@ const workerSchema = mongoose.Schema({
     type: String,
     require: true,
   },
-  address: {
+  location: {
     type: String,
     required: true,
   },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  review: {
+    type: Number,
+    default: 0,
+    max: 5,
+  },
+
+  // tokens: [
+  //   {
+  //     token: {
+  //       type: String,
+  //       required: true,
+  //     },
+  //   },
+  // ],
 });
 
 //Hide Sensitive data
@@ -76,9 +82,9 @@ workerSchema.statics.verifyWorker = async (email, password) => {
 workerSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id }, "demo3project");
-  user.tokens = user.tokens.concat({ token });
+  // user.tokens = user.tokens.concat({ token });
 
-  await user.save();
+  // await user.save();
 
   return token;
 };

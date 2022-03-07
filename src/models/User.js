@@ -29,14 +29,14 @@ const userSchema = mongoose.Schema({
     rquired: true,
     default: 0,
   },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  // tokens: [
+  //   {
+  //     token: {
+  //       type: String,
+  //       required: true,
+  //     },
+  //   },
+  // ],
 });
 
 //Hide Sensitive data
@@ -68,8 +68,8 @@ userSchema.statics.verifyUser = async (email, password) => {
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id }, "demo3project");
-  user.tokens = user.tokens.concat({ token });
-  await user.save();
+  // user.tokens = user.tokens.concat({ token });
+  // await user.save();
   return token;
 };
 

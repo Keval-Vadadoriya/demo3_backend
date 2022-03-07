@@ -13,7 +13,7 @@ const loginUser = async (req, res) => {
 
     res.send({ user, token });
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ Error: e.message });
   }
 };
 

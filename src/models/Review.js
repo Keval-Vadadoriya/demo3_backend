@@ -15,6 +15,7 @@ const reviewSchema = mongoose.Schema({
       review: {
         type: Number,
         required: true,
+        max: 5,
       },
       owner: {
         type: mongoose.Schema.Types.ObjectId,

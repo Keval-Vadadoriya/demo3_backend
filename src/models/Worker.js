@@ -31,7 +31,7 @@ const workerSchema = mongoose.Schema({
   },
   profession: {
     type: String,
-    require: true,
+    required: true,
   },
   location: {
     type: String,

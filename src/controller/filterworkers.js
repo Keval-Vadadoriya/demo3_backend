@@ -4,8 +4,9 @@ const Worker = require("../models/Worker");
 const filterworkers = async (req, res) => {
   try {
     let workers;
+    console.log(req.query);
     if (req.query.review) {
-      const parameters = req.query;
+      const parameters = JSON.parse(JSON.stringify(req.query));
       delete parameters.review;
       console.log(parameters, req.query);
       workers = await Worker.find({

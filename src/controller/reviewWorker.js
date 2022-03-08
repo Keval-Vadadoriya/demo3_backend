@@ -7,6 +7,10 @@ const reviewWorker = async (req, res) => {
   try {
     const review = await Review.findOne({ worker: req.params.id });
     review.reviews.push(req.body);
+    console.log(req.body);
+
+    console.log();
+
     await review.save();
     const xyz = await Review.aggregate([
       { $unwind: "$reviews" },
@@ -19,10 +23,12 @@ const reviewWorker = async (req, res) => {
       },
     ]);
 
+    // console.log(xyz);
+
     const worker = await Worker.findOne({ worker: req.params.id });
     worker.review = xyz[0].averageReview;
     worker.save();
-
+    console.log(review);
     res.send({ review, xyz });
   } catch (e) {
     res.status(400).send(e.message);

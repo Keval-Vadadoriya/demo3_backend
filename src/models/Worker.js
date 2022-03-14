@@ -3,6 +3,8 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const fs = require("fs");
+const buffer = fs.readFileSync("../default.jpg");
 const workerSchema = mongoose.Schema({
   name: {
     type: String,
@@ -42,15 +44,14 @@ const workerSchema = mongoose.Schema({
     default: 0,
     max: 5,
   },
-
-  // tokens: [
-  //   {
-  //     token: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //   },
-  // ],
+  availability: {
+    type: Boolean,
+    default: true,
+  },
+  avatar: {
+    type: Buffer,
+    default: buffer,
+  },
 });
 
 //Hide Sensitive data

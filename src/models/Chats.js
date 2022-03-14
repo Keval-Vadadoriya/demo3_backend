@@ -20,10 +20,17 @@ const chatsSchema = mongoose.Schema({
         type: Number,
       },
       owner: {
-        type: mongoose.Schema.type.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
+        refPath: "chats.role",
+      },
+      role: {
+        type: String,
+        // required: true,
+        enum: ["User", "Worker"],
       },
       status: {
         type: String,
+        default: "sent",
       },
     },
   ],

@@ -5,6 +5,7 @@ const router = require("./router/Router");
 const http = require("http");
 const server = http.createServer(app);
 const socketIo = require("socket.io");
+const Chats = require("./models/Chats");
 const io = socketIo(server, {
   cors: {
     origin: [
@@ -20,38 +21,49 @@ const port = process.env.port || 3001;
 app.use(cors());
 app.use(express.json());
 app.use(router);
-//socket.io trestings
+//socket.io testings
 
 // io.use(function (socket, next) {
 //   var handshakeData = socket.request;
 //   console.log("middleware:", handshakeData._query["foo"]);
 //   next();
 // });
+
 const obj = {};
 io.on("connection", (socket) => {
   let userId;
   console.log("New client connected", socket.id);
-  const response = new Date();
-  socket.emit("FromAPI", response);
-  socket.on("message", (message, id) => {
-    console.log(message);
-    socket.to(obj[id]).emit("messag", message);
+
+  socket.on("message", async (message, sender, receiver, role, callback) => {
+    let chat = await Chats.findOne({
+      user: role === "user" ? sender : receiver,
+      worker: role === "worker" ? sender : receiver,
+    });
+    if (!chat) {
+      chat = new Chats({
+        user: role === "user" ? sender : receiver,
+        worker: role === "worker" ? sender : receiver,
+      });
+    }
+    chat.chats.push(message);
+    await chat.save();
+    callback({
+      status: "sent",
+    });
+    socket.to(obj[receiver]).emit("messag", message);
+  });
+  socket.on("delivered", () => {
+    console.log("message delivered");
   });
 
-  socket.on("setId", (id, id2) => {
-    console.log(id);
+  socket.on("setId", (id) => {
     userId = id;
     obj[id] = socket.id;
-    console.log(obj);
-    socket.to(obj[id2]).emit("messagesss", "hey there");
-
-    // socket.broadcast.emit("messag", message);
   });
+
   socket.on("disconnect", () => {
     console.log("Client disconnected");
     delete obj[userId];
-    console.log(userId);
-    console.log(obj);
   });
 });
 

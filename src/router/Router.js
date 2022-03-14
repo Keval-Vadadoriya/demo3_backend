@@ -10,7 +10,9 @@ const getallworkers = require("../controller/getallworkers");
 const filterworkers = require("../controller/filterworkers");
 const getworker = require("../controller/getworker");
 const getchatlist = require("../controller/getchatlist");
+const getchats = require("../controller/getchats");
 const addtochatlist = require("../controller/addtochatlist");
+const editprofile = require("../controller/editprofile");
 
 const router = express.Router();
 
@@ -31,6 +33,9 @@ router.post("/review/:id", reviewWorker);
 //add to chat-list
 router.post("/addtochatlist/:id", addtochatlist);
 
+//edit profile
+router.post("/editprofile/:id", editprofile);
+
 //get all reviews
 router.get("/getreview/:id", getreviews);
 
@@ -45,5 +50,8 @@ router.get("/filterworkers", filterworkers);
 
 //get chat-list
 router.get("/getchatlist/:id", getchatlist);
+
+//get chats
+router.get("/getchats/:id", getchats);
 
 module.exports = router;

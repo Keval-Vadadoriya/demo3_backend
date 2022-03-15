@@ -23,15 +23,14 @@ const reviewWorker = async (req, res) => {
       },
     ]);
 
-    // console.log(xyz);
-
     const worker = await Worker.findOne({ worker: req.params.id });
     worker.review = xyz[0].averageReview;
     worker.save();
     console.log(review);
-    res.send({ review, xyz });
+    res.send();
   } catch (e) {
-    res.status(400).send(e.message);
+    console.log(e.message);
+    res.status(400).send({ Error: e.message });
   }
 };
 

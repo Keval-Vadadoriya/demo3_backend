@@ -10,7 +10,6 @@ const loginUser = async (req, res) => {
       user = await User.verifyUser(req.body.email, req.body.password);
     }
     const token = await user.generateAuthToken();
-
     res.send({ user, token });
   } catch (e) {
     res.status(400).send({ Error: e.message });

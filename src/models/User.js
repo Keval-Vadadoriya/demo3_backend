@@ -39,7 +39,7 @@ const userSchema = mongoose.Schema({
 
 //Hide Sensitive data
 userSchema.methods.toJSON = function () {
-  user = this;
+  const user = this;
   const userObj = user.toObject();
   delete userObj.password;
   delete userObj.tokens;

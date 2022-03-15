@@ -24,7 +24,8 @@ const filterworkers = async (req, res) => {
     }
     res.send(workers);
   } catch (e) {
-    res.status(400).send(e.message);
+    console.log(e.message);
+    res.status(400).send({ Error: e.message });
   }
 };
 

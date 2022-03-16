@@ -16,11 +16,24 @@ const getchats = async (req, res) => {
       });
     }
     console.log(chats);
-    // if (list.length === 0) {
-    //   throw new Error("No Chats Found");
-    // }
+    await Chats.findOneAndUpdate(
+      {
+        user: req.query.role === "user" ? req.params.id : req.query.id,
+        worker: req.query.role === "worker" ? req.params.id : req.query.id,
+      },
+      { $set: { "chats.$[x].status": "delivered" } },
+      {
+        arrayFilters: [
+          {
+            "x.status": "sent",
+            "x.role": req.query.role === "user" ? "Worker" : "User",
+          },
+        ],
+      }
+    );
     res.send(chats.chats);
   } catch (e) {
+    console.log(e.message);
     res.status(400).send(e.message);
   }
 };

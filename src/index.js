@@ -6,6 +6,8 @@ const http = require("http");
 const server = http.createServer(app);
 const socketIo = require("socket.io");
 const Chats = require("./models/Chats");
+
+const mongoose = require("mongoose");
 const io = socketIo(server, {
   cors: {
     origin: [
@@ -35,6 +37,10 @@ io.on("connection", (socket) => {
   console.log("New client connected", socket.id);
 
   socket.on("message", async (message, sender, receiver, role, callback) => {
+    var _id = new mongoose.Types.ObjectId();
+    console.log(_id);
+    message._id = _id;
+    message.status = "sent";
     let chat = await Chats.findOne({
       user: role === "user" ? sender : receiver,
       worker: role === "worker" ? sender : receiver,
@@ -49,10 +55,22 @@ io.on("connection", (socket) => {
     await chat.save();
     callback({
       status: "sent",
+      message,
     });
     socket.to(obj[receiver]).emit("messag", message);
   });
-  socket.on("delivered", () => {
+  socket.on("delivered", async (_id, sender, receiver, role) => {
+    let chat = await Chats.findOneAndUpdate(
+      {
+        user: role === "user" ? sender : receiver,
+        worker: role === "worker" ? sender : receiver,
+        "chats._id": _id,
+      },
+      { $set: { "chats.$[x].status": "delivered" } },
+      { arrayFilters: [{ "x._id": _id }] }
+    );
+    console.log("hii");
+    socket.to(obj[receiver]).emit("messageDelivered", _id);
     console.log("message delivered");
   });
 

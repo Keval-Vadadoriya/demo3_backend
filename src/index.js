@@ -6,8 +6,8 @@ const http = require("http");
 const server = http.createServer(app);
 const socketIo = require("socket.io");
 const Chats = require("./models/Chats");
-
 const mongoose = require("mongoose");
+const path = require("path");
 const io = socketIo(server, {
   cors: {
     origin: [
@@ -19,8 +19,9 @@ const io = socketIo(server, {
   },
 });
 const port = process.env.port || 3001;
-
 app.use(cors());
+
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.json());
 app.use(router);
 //socket.io testings
@@ -34,11 +35,9 @@ app.use(router);
 const obj = {};
 io.on("connection", (socket) => {
   let userId;
-  console.log("New client connected", socket.id);
 
   socket.on("message", async (message, sender, receiver, role, callback) => {
     var _id = new mongoose.Types.ObjectId();
-    console.log(_id);
     message._id = _id;
     message.status = "sent";
     let chat = await Chats.findOne({
@@ -69,9 +68,7 @@ io.on("connection", (socket) => {
       { $set: { "chats.$[x].status": "delivered" } },
       { arrayFilters: [{ "x._id": _id }] }
     );
-    console.log("hii");
     socket.to(obj[receiver]).emit("messageDelivered", _id);
-    console.log("message delivered");
   });
 
   socket.on("setId", (id) => {
@@ -80,7 +77,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("Client disconnected");
     delete obj[userId];
   });
 });

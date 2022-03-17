@@ -25,7 +25,6 @@ const chatsSchema = mongoose.Schema({
       },
       role: {
         type: String,
-        // required: true,
         enum: ["User", "Worker"],
       },
       status: {

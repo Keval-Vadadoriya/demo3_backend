@@ -1,6 +1,4 @@
-// const Review = require("../models/Review");
 const Worker = require("../models/Worker");
-const Chats = require("../models/Chats");
 
 const getallworkers = async (req, res) => {
   try {
@@ -9,12 +7,6 @@ const getallworkers = async (req, res) => {
       throw new Error("No Workers Found");
     }
 
-    //testing
-    // const y = await Chats.findOne({}).populate({
-    //   path: "chats.owner",
-    //   select: { name: 1 },
-    // });
-    //
     res.send(workers);
   } catch (e) {
     res.status(400).send(e.message);

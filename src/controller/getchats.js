@@ -7,7 +7,9 @@ const getchats = async (req, res) => {
       chats = await Chats.findOne({
         user: req.params.id,
         worker: req.query.id,
-      });
+      })
+        .populate({ path: "user", select: { name: 1, _id: 0 } })
+        .populate({ path: "worker", select: { name: 1, _id: 0 } });
     }
     if (req.query.role === "worker") {
       chats = await Chats.findOne({
@@ -15,7 +17,6 @@ const getchats = async (req, res) => {
         user: req.query.id,
       });
     }
-    console.log(chats);
     await Chats.findOneAndUpdate(
       {
         user: req.query.role === "user" ? req.params.id : req.query.id,
@@ -31,9 +32,12 @@ const getchats = async (req, res) => {
         ],
       }
     );
-    res.send(chats.chats);
+    if (chats === null) {
+      return res.send([]);
+    }
+    res.send(chats);
   } catch (e) {
-    console.log(e.message);
+    // console.log(e.message);
     res.status(400).send(e.message);
   }
 };

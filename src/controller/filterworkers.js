@@ -1,14 +1,11 @@
-const Profession = require("../models/Profession");
 const Worker = require("../models/Worker");
 
 const filterworkers = async (req, res) => {
   try {
     let workers;
-    console.log(req.query);
     if (req.query.review) {
       const parameters = JSON.parse(JSON.stringify(req.query));
       delete parameters.review;
-      console.log(parameters, req.query);
       workers = await Worker.find({
         review: { $gte: req.query.review },
         ...parameters,
@@ -24,7 +21,7 @@ const filterworkers = async (req, res) => {
     }
     res.send(workers);
   } catch (e) {
-    console.log(e.message);
+    // console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

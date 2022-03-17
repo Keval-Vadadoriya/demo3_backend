@@ -16,10 +16,7 @@ const getchatlist = async (req, res) => {
         select: { name: 1, _id: 1 },
       });
     }
-    console.log(list);
-    // if (list.length === 0) {
-    //   throw new Error("No Chats Found");
-    // }
+
     res.send(list);
   } catch (e) {
     res.status(400).send(e.message);

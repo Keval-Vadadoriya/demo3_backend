@@ -6,7 +6,6 @@ const Review = require("../models/Review");
 const registerUser = async (req, res) => {
   try {
     let user;
-    console.log(req.file.filename);
     req.body.avatar = `uploads/${req.file.filename}`;
     if (req.query.role === "worker") {
       user = new Worker(req.body);

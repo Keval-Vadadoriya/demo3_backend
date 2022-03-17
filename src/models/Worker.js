@@ -3,8 +3,6 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-// const fs = require("fs");
-// const buffer = fs.readFileSync("../default.jpg");
 const workerSchema = mongoose.Schema({
   name: {
     type: String,

@@ -3,8 +3,6 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const fs = require("fs");
-const buffer = fs.readFileSync("../default.jpg");
 const userSchema = mongoose.Schema({
   name: {
     type: String,
@@ -14,7 +12,6 @@ const userSchema = mongoose.Schema({
     type: String,
     unique: true,
     required: true,
-    // toLowercase:true,
     validate(value) {
       if (!validator.isEmail(value)) {
         throw new Error("Not Email");
@@ -32,8 +29,8 @@ const userSchema = mongoose.Schema({
     default: 0,
   },
   avatar: {
-    type: Buffer,
-    default: buffer,
+    type: String,
+    default: "uploads/default.jpg",
   },
 });
 
@@ -66,8 +63,6 @@ userSchema.statics.verifyUser = async (email, password) => {
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id }, "demo3project");
-  // user.tokens = user.tokens.concat({ token });
-  // await user.save();
   return token;
 };
 

@@ -10,11 +10,9 @@ const reviewSchema = mongoose.Schema({
     {
       description: {
         type: String,
-        required: true,
       },
       review: {
         type: Number,
-        required: true,
         max: 5,
       },
       owner: {

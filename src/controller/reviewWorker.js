@@ -23,6 +23,7 @@ const reviewWorker = async (req, res) => {
     worker.save();
     res.send();
   } catch (e) {
+    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

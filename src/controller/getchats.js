@@ -15,8 +15,24 @@ const getchats = async (req, res) => {
       chats = await Chats.findOne({
         worker: req.params.id,
         user: req.query.id,
-      });
+      })
+        .populate({ path: "user", select: { name: 1, _id: 0 } })
+        .populate({ path: "worker", select: { name: 1, _id: 0 } });
     }
+
+    //testing
+    // const xy = await Chats.aggregate([
+    //   { $unwind: "$chats" },
+    //   { $match: { user: req.params.id, worker: req.query.id } },
+    //   {
+    //     $group: {
+    //       // _id: "$worker",
+    //       averageReview: { $count: "$chats" },
+    //     },
+    //   },
+    // ]);
+    // console.log(xy);
+
     await Chats.findOneAndUpdate(
       {
         user: req.query.role === "user" ? req.params.id : req.query.id,

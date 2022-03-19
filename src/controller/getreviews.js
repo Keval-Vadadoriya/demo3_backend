@@ -5,6 +5,7 @@ const getreviews = async (req, res) => {
     const review = await Review.findOne({ worker: req.params.id }).populate({
       path: "reviews.owner",
     });
+    console.log(review);
     if (!review) {
       throw new Error("No Reviews");
     }

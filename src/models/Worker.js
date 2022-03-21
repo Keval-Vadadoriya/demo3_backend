@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const workerSchema = mongoose.Schema({
   name: {
     type: String,
+    unique: true,
     required: true,
   },
   email: {
@@ -22,6 +23,10 @@ const workerSchema = mongoose.Schema({
     type: String,
     rquired: true,
     minlength: 8,
+  },
+  description: {
+    type: String,
+    default: "",
   },
   age: {
     type: Number,
@@ -51,7 +56,6 @@ const workerSchema = mongoose.Schema({
   },
   contact: {
     type: Number,
-    required: true,
     minlength: 10,
     maxlength: 10,
   },
@@ -85,7 +89,7 @@ workerSchema.statics.verifyWorker = async (email, password) => {
 //  generate JsonWebToken
 workerSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user._id }, "demo3project");
+  const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
 
   return token;
 };

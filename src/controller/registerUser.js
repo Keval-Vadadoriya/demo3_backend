@@ -6,7 +6,8 @@ const Review = require("../models/Review");
 const registerUser = async (req, res) => {
   try {
     let user;
-    req.body.avatar = `uploads/${req.file.filename}`;
+    console.log(req.body);
+    // req.body.avatar = `uploads/${req.file.filename}`;
     if (req.query.role === "worker") {
       user = new Worker(req.body);
 
@@ -38,6 +39,7 @@ const registerUser = async (req, res) => {
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (e) {
+    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

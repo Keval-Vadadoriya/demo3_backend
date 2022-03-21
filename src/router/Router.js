@@ -51,7 +51,7 @@ const upload = multer({
 });
 
 //   register user
-router.post("/signup", upload.single("avatar"), registerUser);
+router.post("/signup", registerUser);
 
 //   login user
 router.post("/login", loginUser);
@@ -63,7 +63,7 @@ router.post("/review/:id", reviewWorker);
 router.post("/addtochatlist/:id", addtochatlist);
 
 //edit profile
-router.post("/editprofile/:id", editprofile);
+router.post("/editprofile/:id", upload.single("avatar"), editprofile);
 
 //get all reviews
 router.get("/getreview/:id", getreviews);

@@ -2,7 +2,7 @@ const Worker = require("../models/Worker");
 
 const filterworkers = async (req, res) => {
   try {
-    let workers;
+    let workers, count;
     if (req.query.review) {
       const parameters = JSON.parse(JSON.stringify(req.query));
       delete parameters.review;
@@ -15,13 +15,31 @@ const filterworkers = async (req, res) => {
         ...req.query,
       });
     }
+    count = workers.length;
+
+    if (req.query.review) {
+      const parameters = JSON.parse(JSON.stringify(req.query));
+      delete parameters.review;
+      workers = await Worker.find({
+        review: { $gte: req.query.review },
+        ...parameters,
+      })
+        .limit(req.query.limit)
+        .skip(req.query.skip);
+    } else {
+      workers = await Worker.find({
+        ...req.query,
+      })
+        .limit(req.query.limit)
+        .skip(req.query.skip);
+    }
 
     if (workers.length === 0) {
       throw new Error("No Workers Found");
     }
-    res.send(workers);
+    res.send({ workers, count });
   } catch (e) {
-    // console.log(e.message);
+    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

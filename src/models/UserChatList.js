@@ -9,6 +9,7 @@ const userChatListSchema = mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Worker",
+      default: [],
     },
   ],
 });

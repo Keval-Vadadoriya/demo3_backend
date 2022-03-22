@@ -60,7 +60,7 @@ const addtochatlist = async (req, res) => {
     res.send(list2);
   } catch (e) {
     console.log(e.message);
-    res.status(400).send(e.message);
+    res.status(400).send({ Error: e.message });
   }
 };
 module.exports = addtochatlist;

@@ -12,7 +12,7 @@ const getreviews = async (req, res) => {
     const reviews = review.reviews.reverse();
     res.send(reviews);
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ Error: e.message });
   }
 };
 

@@ -19,7 +19,7 @@ const getchatlist = async (req, res) => {
 
     res.send(list);
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ Error: e.message });
   }
 };
 

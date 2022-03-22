@@ -87,9 +87,9 @@ workerSchema.statics.verifyWorker = async (email, password) => {
 };
 
 //  generate JsonWebToken
-workerSchema.methods.generateAuthToken = async function () {
+workerSchema.methods.generateAuthToken = async function (role) {
   const user = this;
-  const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
+  const token = jwt.sign({ _id: user._id, role }, process.env.SECRET_KEY);
 
   return token;
 };

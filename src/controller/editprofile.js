@@ -3,21 +3,13 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
 
-// const path = "./file.txt";
-
-// try {
-//   fs.unlinkSync(path);
-//   //file removed
-// } catch (err) {
-//   console.error(err);
-// }
 const editprofile = async (req, res) => {
   let user;
   try {
+    console.log(req.body);
     if (req.body.password) {
       req.body.password = await bcrypt.hash(req.body.password, 8);
     }
-    console.log(req.body.avatar, req.file);
     if (req.file) {
       req.body.avatar = `uploads/${req.file.filename}`;
     }
@@ -57,7 +49,7 @@ const editprofile = async (req, res) => {
     res.send(user);
   } catch (e) {
     console.log(e.message);
-    res.status(400).send(e.message);
+    res.status(400).send({ Error: e.message });
   }
 };
 

@@ -18,7 +18,7 @@ const getallworkers = async (req, res) => {
     res.send({ workers, count });
   } catch (e) {
     console.log(e.message);
-    res.status(400).send(e.message);
+    res.status(400).send({ Error: e.message });
   }
 };
 

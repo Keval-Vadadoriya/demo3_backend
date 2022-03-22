@@ -9,7 +9,7 @@ const loginUser = async (req, res) => {
     } else {
       user = await User.verifyUser(req.body.email, req.body.password);
     }
-    const token = await user.generateAuthToken();
+    const token = await user.generateAuthToken(req.query.role);
     res.send({ user, token });
   } catch (e) {
     res.status(400).send({ Error: e.message });

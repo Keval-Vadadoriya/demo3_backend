@@ -1,6 +1,9 @@
 //Express
 const express = require("express");
 
+//Authentication
+const auth = require("../middleware/Auth");
+
 //controllers
 const registerUser = require("../controller/registerUser");
 const loginUser = require("../controller/loginUser");
@@ -57,30 +60,30 @@ router.post("/signup", registerUser);
 router.post("/login", loginUser);
 
 //Reviews
-router.post("/review/:id", reviewWorker);
+router.post("/review/:id", auth, reviewWorker);
 
 //add to chat-list
-router.post("/addtochatlist/:id", addtochatlist);
+router.post("/addtochatlist/:id", auth, addtochatlist);
 
 //edit profile
-router.post("/editprofile/:id", upload.single("avatar"), editprofile);
+router.post("/editprofile/:id", [upload.single("avatar"), auth], editprofile);
 
 //get all reviews
-router.get("/getreview/:id", getreviews);
+router.get("/getreview/:id", auth, getreviews);
 
 //get all workers
-router.get("/getallworkers", getallworkers);
+router.get("/getallworkers", auth, getallworkers);
 
 //get worker
-router.get("/getworker/:id", getworker);
+router.get("/getworker/:id", auth, getworker);
 
 //get all workers
-router.get("/filterworkers", filterworkers);
+router.get("/filterworkers", auth, filterworkers);
 
 //get chat-list
-router.get("/getchatlist/:id", getchatlist);
+router.get("/getchatlist/:id", auth, getchatlist);
 
 //get chats
-router.get("/getchats/:id", getchats);
+router.get("/getchats/:id", auth, getchats);
 
 module.exports = router;

@@ -8,7 +8,7 @@ const getworker = async (req, res) => {
     }
     res.send(worker);
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ Error: e.message });
   }
 };
 

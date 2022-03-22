@@ -28,16 +28,31 @@ const message = async (
   await chat.save();
 
   //sort chat list
-  if (role === "user") {
-    chatlist = await UserChatList.findOne({ user: sender });
-  } else {
-    chatlist = await WorkerChatList.findOne({ worker: sender });
-  }
-  const index =
-    chatlist[role === "user" ? "workers" : "users"].indexOf(receiver);
-  chatlist[role === "user" ? "workers" : "users"].splice(index, 1);
-  chatlist[role === "user" ? "workers" : "users"].unshift(receiver);
+  // if (role === "user") {
+  chatlist = await UserChatList.findOne({
+    user: role === "user" ? sender : receiver,
+  });
+  let index = chatlist["workers"].indexOf(receiver);
+  chatlist["workers"].splice(index, 1);
+  chatlist["workers"].unshift(receiver);
   await chatlist.save();
+
+  chatlist = await WorkerChatList.findOne({
+    worker: role === "user" ? receiver : sender,
+  });
+  index = chatlist["users"].indexOf(receiver);
+  chatlist["users"].splice(index, 1);
+  chatlist["users"].unshift(receiver);
+  await chatlist.save();
+  // } else {
+  //   chatlist = await WorkerChatList.findOne({ worker: sender });
+  // }
+  // const index =
+  //   chatlist[role === "user" ? "workers" : "users"].indexOf(receiver);
+  // chatlist[role === "user" ? "workers" : "users"].splice(index, 1);
+  // chatlist[role === "user" ? "workers" : "users"].unshift(receiver);
+  // await chatlist.save();
+
   if (role === "user") {
     chatlist = await UserChatList.findOne({ user: sender }).populate({
       path: "workers",
@@ -49,6 +64,8 @@ const message = async (
       select: { name: 1, _id: 1 },
     });
   }
+
+  //count++
 
   //callback
   callback({

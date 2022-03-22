@@ -54,7 +54,7 @@ const getchats = async (req, res) => {
     res.send(chats);
   } catch (e) {
     // console.log(e.message);
-    res.status(400).send(e.message);
+    res.status(400).send({ Error: e.message });
   }
 };
 

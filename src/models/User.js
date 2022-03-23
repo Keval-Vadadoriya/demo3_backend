@@ -68,6 +68,7 @@ userSchema.statics.verifyUser = async (email, password) => {
 userSchema.methods.generateAuthToken = async function (role) {
   const user = this;
   const token = jwt.sign({ _id: user._id, role }, process.env.SECRET_KEY);
+
   return token;
 };
 

@@ -10,6 +10,8 @@ const delivered = async (socket, _id, sender, receiver, role) => {
     { $set: { "chats.$[x].status": "delivered" } },
     { arrayFilters: [{ "x._id": _id }] }
   );
-  socket.to(obj[receiver]).emit("messageDelivered", _id);
+  if (obj[receiver]) {
+    socket.to(obj[receiver]).emit("messageDelivered", _id);
+  }
 };
 module.exports = delivered;

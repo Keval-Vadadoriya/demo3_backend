@@ -15,6 +15,8 @@ const io = socketIo(server, {
       `http://localhost:3000`,
       `http://localhost:3002`,
       `http://localhost:3003`,
+      "http://192.168.200.175:3000",
+      "http://192.168.200.36:3000",
     ],
     methods: ["GET", "POST"],
   },

@@ -16,6 +16,11 @@ const getchatlist = require("../controller/getchatlist");
 const getchats = require("../controller/getchats");
 const addtochatlist = require("../controller/addtochatlist");
 const editprofile = require("../controller/editprofile");
+const postproject = require("../controller/postproject");
+const getallprojects = require("../controller/getallprojects");
+const getmyprojects = require("../controller/getmyprojects");
+const filterprojects = require("../controller/filterprojects");
+const removeproject = require("../controller/removeproject");
 const router = express.Router();
 const path = require("path");
 const multer = require("multer");
@@ -60,7 +65,7 @@ router.post("/signup", registerUser);
 router.post("/login", loginUser);
 
 //Reviews
-router.post("/review/:id", auth, reviewWorker);
+router.post("/review/:workerId", auth, reviewWorker);
 
 //add to chat-list
 router.post("/addtochatlist/:id", auth, addtochatlist);
@@ -69,13 +74,13 @@ router.post("/addtochatlist/:id", auth, addtochatlist);
 router.post("/editprofile/:id", [upload.single("avatar"), auth], editprofile);
 
 //get all reviews
-router.get("/getreview/:id", auth, getreviews);
+router.get("/getreview/:workerId", auth, getreviews);
 
 //get all workers
 router.get("/getallworkers", auth, getallworkers);
 
 //get worker
-router.get("/getworker/:id", auth, getworker);
+router.get("/getworker/:workerId", auth, getworker);
 
 //get all workers
 router.get("/filterworkers", auth, filterworkers);
@@ -85,5 +90,22 @@ router.get("/getchatlist/:id", auth, getchatlist);
 
 //get chats
 router.get("/getchats/:id", auth, getchats);
+
+//PROJECT
+
+//post project
+router.post("/project", auth, postproject);
+
+//get all project
+router.get("/getallprojects", auth, getallprojects);
+
+//my projects
+router.get("/getmyprojects", auth, getmyprojects);
+
+//filter project
+router.get("/filterprojects", auth, filterprojects);
+
+//remove project
+router.delete("/removeproject/:projectid", auth, removeproject);
 
 module.exports = router;

@@ -73,6 +73,8 @@ const message = async (
     message,
     chatlist: chatlist[role === "user" ? "workers" : "users"],
   });
-  socket.to(obj[receiver]).emit("messag", message);
+  if (obj[receiver]) {
+    socket.to(obj[receiver]).emit("messag", message);
+  }
 };
 module.exports = message;

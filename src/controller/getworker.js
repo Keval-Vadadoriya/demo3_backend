@@ -2,7 +2,7 @@ const Worker = require("../models/Worker");
 
 const getworker = async (req, res) => {
   try {
-    const worker = await Worker.findOne({ _id: req.params.id });
+    const worker = await Worker.findOne({ _id: req.params.workerId });
     if (!worker) {
       throw new Error("No Worker Found");
     }

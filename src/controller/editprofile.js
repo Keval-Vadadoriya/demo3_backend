@@ -15,14 +15,14 @@ const editprofile = async (req, res) => {
     }
 
     //find
-    if (req.query.role === "user") {
-      user = await User.findOne({ _id: req.params.id });
+    if (req.role === "user") {
+      user = await User.findOne({ _id: req.userId });
       if (!user) {
         throw new Error("no user found");
       }
     }
-    if (req.query.role === "worker") {
-      user = await Worker.findOne({ _id: req.params.id });
+    if (req.role === "worker") {
+      user = await Worker.findOne({ _id: req.userId });
       if (!user) {
         throw new Error("no worker found");
       }
@@ -33,18 +33,18 @@ const editprofile = async (req, res) => {
 
     //update
     if (req.query.role === "user") {
-      await User.updateOne({ _id: req.params.id }, req.body);
+      await User.updateOne({ _id: req.userId }, req.body);
     }
     if (req.query.role === "worker") {
-      await Worker.updateOne({ _id: req.params.id }, req.body);
+      await Worker.updateOne({ _id: req.userId }, req.body);
     }
 
     //find again
     if (req.query.role === "user") {
-      user = await User.findOne({ _id: req.params.id });
+      user = await User.findOne({ _id: req.userId });
     }
     if (req.query.role === "worker") {
-      user = await Worker.findOne({ _id: req.params.id });
+      user = await Worker.findOne({ _id: req.userId });
     }
     res.send(user);
   } catch (e) {

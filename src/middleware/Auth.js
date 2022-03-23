@@ -21,7 +21,9 @@ const auth = async (req, res, next) => {
       throw new Error("Please Authenticate");
     }
 
-    req.user = user[0];
+    req.userId = decoded._id;
+    req.role = decoded.role;
+    // req.user = user[0];
     next();
   } catch (e) {
     console.log(e.message);

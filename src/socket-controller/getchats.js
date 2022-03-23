@@ -32,7 +32,9 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
     data.chats.forEach((chat) => {
       if (chat.status === "sent") {
         console.log(chat._id);
-        socket.to(obj[receiverId]).emit("messageDelivered", chat._id);
+        if (obj[receiverId]) {
+          socket.to(obj[receiverId]).emit("messageDelivered", chat._id);
+        }
       }
     });
   }

@@ -2,7 +2,9 @@ const Review = require("../models/Review");
 
 const getreviews = async (req, res) => {
   try {
-    const review = await Review.findOne({ worker: req.params.id }).populate({
+    const review = await Review.findOne({
+      worker: req.params.workerId,
+    }).populate({
       path: "reviews.owner",
     });
     console.log(review);

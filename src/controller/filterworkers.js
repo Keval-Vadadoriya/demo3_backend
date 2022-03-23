@@ -3,6 +3,7 @@ const Worker = require("../models/Worker");
 const filterworkers = async (req, res) => {
   try {
     let workers, count;
+    console.log(req.query);
     if (req.query.review) {
       const parameters = JSON.parse(JSON.stringify(req.query));
       delete parameters.review;

@@ -3,7 +3,7 @@ const Review = require("../models/Review");
 const { default: mongoose } = require("mongoose");
 const reviewWorker = async (req, res) => {
   try {
-    const review = await Review.findOne({ worker: req.params.id });
+    const review = await Review.findOne({ worker: req.params.workerId });
     review.reviews.push(req.body);
 
     await review.save();

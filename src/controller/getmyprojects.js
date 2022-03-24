@@ -14,7 +14,8 @@ const getmyprojects = async (req, res) => {
 
     console.log(myProjects);
     if (myProjects.length === 0) {
-      throw new Error("No Workers Found");
+      // throw new Error("No Workers Found");
+      return res.send([]);
     }
 
     // res.send(myProjects);

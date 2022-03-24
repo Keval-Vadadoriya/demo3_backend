@@ -9,13 +9,13 @@ const getchatlist = async (socket, sender, role) => {
   if (role === "worker") {
     list = await WorkerChatList.findOne({ worker: sender }).populate({
       path: "users",
-      select: { name: 1, _id: 1 },
+      select: { name: 1, _id: 1, avatar: 1 },
     });
   }
   if (role === "user") {
     list = await UserChatList.findOne({ user: sender }).populate({
       path: "workers",
-      select: { name: 1, _id: 1 },
+      select: { name: 1, _id: 1, avatar: 1 },
     });
   }
   if (list) {

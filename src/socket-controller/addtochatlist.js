@@ -7,13 +7,15 @@ const addtochatlist = async (socket, userid, role, workerid) => {
   const userId = role === "user" ? userid : workerid;
   const workerId = role === "worker" ? userid : workerid;
 
-  // if (role === "user") {
+  console.log("addtochatlist");
   list = await UserChatList.findOne({ user: userId });
   if (list) {
     if (!list.workers.includes(workerId)) {
+      console.log("hi");
       list.workers.unshift(workerId);
       await list.save();
       chats = new Chats({ user: userId, worker: workerId });
+      chats.chats = [];
       await chats.save();
       chats = await Chats.findOne({ user: userId, worker: workerId })
         .populate("user")
@@ -21,11 +23,19 @@ const addtochatlist = async (socket, userid, role, workerid) => {
       console.log(chats);
     }
   } else {
+    console.log("hi");
     list = new UserChatList({
       user: userId,
       workers: [workerId],
     });
     await list.save();
+    chats = new Chats({ user: userId, worker: workerId });
+    chats.chats = [];
+    await chats.save();
+    chats = await Chats.findOne({ user: userId, worker: workerId })
+      .populate("user")
+      .populate("worker");
+    console.log(chats);
   }
 
   //kjhkgjk
@@ -41,25 +51,21 @@ const addtochatlist = async (socket, userid, role, workerid) => {
       users: [userId],
     });
     await list2.save();
-    console.log(list2);
-    // const chats=new Chats({user:userId,worker:workerId})
   }
-  // } else {
-  //   throw new Error("Invalid");
-  // }
   if (role === "user") {
     list = await UserChatList.findOne({ user: userId }).populate({
       path: "workers",
-      select: { name: 1, _id: 1 },
+      select: { name: 1, _id: 1, avatar: 1 },
     });
   } else {
     list = await WorkerChatList.findOne({ worker: workerId }).populate({
-      path: "workers",
-      select: { name: 1, _id: 1 },
+      path: "users",
+      select: { name: 1, _id: 1, avatar: 1 },
     });
   }
 
   console.log(chats);
-  socket.emit("chatlist", list.workers, chats);
+
+  socket.emit("chatlist", list[role === "user" ? "workers" : "users"], chats);
 };
 module.exports = addtochatlist;

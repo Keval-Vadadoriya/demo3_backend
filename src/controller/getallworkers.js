@@ -3,7 +3,7 @@ const Worker = require("../models/Worker");
 const getallworkers = async (req, res) => {
   try {
     const cw = await Worker.find();
-    const count = cw.length;
+    let count = cw.length;
     console.log(count);
 
     const workers = await Worker.find()
@@ -14,6 +14,11 @@ const getallworkers = async (req, res) => {
     if (workers.length === 0) {
       throw new Error("No Workers Found");
     }
+    console.log(req.query.skip);
+    if (req.query.skip !== "0") {
+      count = null;
+    }
+    console.log(count);
 
     res.send({ workers, count });
   } catch (e) {

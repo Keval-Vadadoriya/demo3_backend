@@ -42,7 +42,9 @@ const filterworkers = async (req, res) => {
       count = null;
     }
     console.log(count);
-    res.send({ workers, count });
+    setTimeout(() => {
+      return res.send({ workers, count });
+    }, 5000);
   } catch (e) {
     console.log(e.message);
     res.status(400).send({ Error: e.message });

@@ -7,6 +7,14 @@ const editprofile = async (req, res) => {
   let user;
   try {
     console.log(req.body);
+
+    if (req.body.availability) {
+      if (req.body.availability === "none") {
+        delete req.body.availability;
+      } else {
+        req.body.availability = Boolean(req.body.availability);
+      }
+    }
     if (req.body.password) {
       req.body.password = await bcrypt.hash(req.body.password, 8);
     }

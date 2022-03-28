@@ -59,6 +59,10 @@ const workerSchema = mongoose.Schema({
     minlength: 10,
     maxlength: 10,
   },
+  active: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 //Hide Sensitive data

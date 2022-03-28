@@ -1,34 +1,40 @@
 const User = require("../models/User");
 const Worker = require("../models/Worker");
 const Review = require("../models/Review");
-// const nodemailer = require("nodemailer");
+const Verify = require("../models/Verify");
+const nodemailer = require("nodemailer");
 
 const registerUser = async (req, res) => {
   try {
-    // async function main() {
-    //   let transporter = nodemailer.createTransport({
-    //     host: "smtp.gmail.com",
-    //     port: 465,
-    //     secure: true,
-    //     auth: {
-    //       user: "demoproject2608@gmail.com",
-    //       pass: "7433985751",
-    //     },
-    //   });
+    const rand = Math.floor(Math.random() * 100 + 54);
+    const link = "http://" + req.get("host") + "/verify?id=" + rand;
+    async function main() {
+      let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "demoproject2608@gmail.com",
+          pass: "7433985751",
+        },
+      });
 
-    //   let info = await transporter.sendMail({
-    //     from: "demoproject2608@gmail.com",
-    //     to: "keval.180410107122@gmail.com",
-    //     subject: "Hello ✔",
-    //     text: "Hello world?",
-    //     html: "<b>Hello world?</b>",
-    //   });
+      let info = await transporter.sendMail({
+        from: "demoproject2608@gmail.com",
+        to: "keval.180410107122@gmail.com",
+        subject: "Please confirm your Email account",
+        text: "Hello world?",
+        html:
+          "Hello,<br> Please Click on the link to verify your email.<br><a href=" +
+          link +
+          ">Click here to verify</a>",
+      });
 
-    //   console.log("Message sent: %s", info.messageId);
-    //   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // }
+      console.log("Message sent: %s", info.messageId);
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    }
 
-    // main().catch(console.error);
+    main().catch(console.error);
 
     //orginal
     let user;
@@ -46,6 +52,10 @@ const registerUser = async (req, res) => {
     user = await user.hashPswd();
     await user.save();
     const token = await user.generateAuthToken(req.query.role);
+
+    //Verify model
+    const verify = new Verify({ hash: rand, user: user._id });
+    verify.save();
 
     res.status(201).send({ user, token });
   } catch (e) {

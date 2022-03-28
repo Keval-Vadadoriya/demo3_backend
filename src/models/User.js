@@ -37,6 +37,10 @@ const userSchema = mongoose.Schema({
     type: String,
     default: "uploads/default.jpg",
   },
+  active: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 //Hide Sensitive data

@@ -16,6 +16,7 @@ const getchatlist = require("../controller/getchatlist");
 const getchats = require("../controller/getchats");
 const addtochatlist = require("../controller/addtochatlist");
 const editprofile = require("../controller/editprofile");
+const getprofile = require("../controller/getprofile");
 const postproject = require("../controller/postproject");
 const getallprojects = require("../controller/getallprojects");
 const getmyprojects = require("../controller/getmyprojects");
@@ -58,8 +59,8 @@ const upload = multer({
   limits: 1000000,
 });
 
-//   register user
-router.post("/signup", registerUser);
+// //   register user
+// router.post("/signup", registerUser);
 
 //   login user
 router.post("/login", loginUser);
@@ -72,6 +73,9 @@ router.post("/addtochatlist/:id", auth, addtochatlist);
 
 //edit profile
 router.post("/editprofile/:id", [upload.single("avatar"), auth], editprofile);
+
+//get profile
+router.get("/getprofile", auth, getprofile);
 
 //get all reviews
 router.get("/getreview/:workerId", auth, getreviews);

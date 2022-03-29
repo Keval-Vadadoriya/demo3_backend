@@ -28,8 +28,8 @@ const loginUser = async (req, res) => {
       await verify.save();
       throw new Error("Plese Verify Your Email");
     }
-    const token = await user.generateAuthToken(req.query.role);
-    res.send({ user, token });
+    const token = await user.generateAuthToken(role);
+    res.send({ user, token, role });
   } catch (e) {
     console.log(e.message);
     res.status(400).send({ Error: e.message });

@@ -5,7 +5,8 @@ const bcrypt = require("bcrypt");
 
 const verifyPassword = async (req, res) => {
   try {
-    let user;
+    let user,
+      role = "user";
     console.log("Domain is matched. Information is from Authentic email");
     const verify = await VerifyPassword.findOne({
       otp: req.params.otp,
@@ -16,6 +17,7 @@ const verifyPassword = async (req, res) => {
       user = await User.findOne({ _id: verify.user });
       if (!user) {
         user = await Worker.findOne({ _id: verify.user });
+        role = "worker";
       }
       if (!user) {
         throw new Error("Invalid");
@@ -28,7 +30,7 @@ const verifyPassword = async (req, res) => {
         await VerifyPassword.findOneAndDelete({ otp: req.query.otp });
         console.log("3");
       }
-      const token = await user.generateAuthToken();
+      const token = await user.generateAuthToken(role);
       console.log("4");
 
       res.send({ user, token });

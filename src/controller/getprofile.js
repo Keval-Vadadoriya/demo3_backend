@@ -1,7 +1,5 @@
 const Worker = require("../models/Worker");
 const User = require("../models/User");
-const bcrypt = require("bcrypt");
-const fs = require("fs");
 
 const getprofile = async (req, res) => {
   let user;

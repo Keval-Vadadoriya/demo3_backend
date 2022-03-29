@@ -56,14 +56,15 @@ userSchema.methods.toJSON = function () {
 //Checking Credentials
 userSchema.statics.verifyUser = async (email, password) => {
   const user = await User.findOne({ email });
-  if (!user) {
-    throw new Error("Invalid Email");
-  }
+  // if (!user) {
+  //   throw new Error("Invalid Email");
+  // }
+  if (user) {
+    const ismatch = await bcrypt.compare(password, user.password);
 
-  const ismatch = await bcrypt.compare(password, user.password);
-
-  if (!ismatch) {
-    throw new Error("Invalid Password");
+    if (!ismatch) {
+      throw new Error("Invalid Password");
+    }
   }
   return user;
 };

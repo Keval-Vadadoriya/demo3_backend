@@ -78,14 +78,16 @@ workerSchema.methods.toJSON = function () {
 //Checking Credentials
 workerSchema.statics.verifyWorker = async (email, password) => {
   const user = await Worker.findOne({ email });
-  if (!user) {
-    throw new Error("Invalid Email");
-  }
+  // if (!user) {
+  //   throw new Error("Invalid Email");
+  // }
 
-  const ismatch = await bcrypt.compare(password, user.password);
+  if (user) {
+    const ismatch = await bcrypt.compare(password, user.password);
 
-  if (!ismatch) {
-    throw new Error("Invalid Password");
+    if (!ismatch) {
+      throw new Error("Invalid Password");
+    }
   }
   return user;
 };

@@ -1,30 +1,36 @@
 const Worker = require("../models/Worker");
 const User = require("../models/User");
-const Verify = require("../models/Verify");
+const VerifyPassword = require("../models/VerifyPassword");
+const bcrypt = require("bcrypt");
 
-const verifyUser = async (req, res) => {
+const verifyPassword = async (req, res) => {
   try {
-    let user,
-      role = "user";
+    let user;
     console.log("Domain is matched. Information is from Authentic email");
-    const verify = await Verify.findOne({
+    const verify = await VerifyPassword.findOne({
       otp: req.params.otp,
     });
     if (verify) {
+      console.log(verify, req.body);
       console.log("email is verified");
       user = await User.findOne({ _id: verify.user });
       if (!user) {
         user = await Worker.findOne({ _id: verify.user });
-        role = "worker";
       }
       if (!user) {
         throw new Error("Invalid");
       } else {
-        user.active = true;
+        user.password = await bcrypt.hash(req.body.password, 8);
+        console.log("1");
         await user.save();
-        await Verify.findOneAndDelete({ otp: req.query.id });
+        console.log("2");
+
+        await VerifyPassword.findOneAndDelete({ otp: req.query.otp });
+        console.log("3");
       }
-      const token = await user.generateAuthToken(role);
+      const token = await user.generateAuthToken();
+      console.log("4");
+
       res.send({ user, token });
     } else {
       throw new Error("Invalid2");
@@ -35,4 +41,4 @@ const verifyUser = async (req, res) => {
   }
 };
 
-module.exports = verifyUser;
+module.exports = verifyPassword;

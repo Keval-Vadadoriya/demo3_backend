@@ -7,12 +7,18 @@ const auth = require("../middleware/Auth");
 //controllers
 const registerUser = require("../controller/registerUser");
 const verifyUser = require("../controller/verifyUser");
+const verifyPassword = require("../controller/verifyPassword");
+const forgotPassword = require("../controller/forgotPassword");
 
 const verifyrouter = express.Router();
 
 //   register user
 verifyrouter.post("/signup", registerUser);
 
-verifyrouter.get("/verify", verifyUser);
+verifyrouter.post("/verify/:otp", verifyUser);
+
+verifyrouter.post("/verifyPassword/:otp", verifyPassword);
+
+verifyrouter.post("/forgotPassword", forgotPassword);
 
 module.exports = verifyrouter;

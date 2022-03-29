@@ -1,6 +1,6 @@
 const mongoose = require("../database/mongoose");
 
-const verifySchema = mongoose.Schema({
+const verifyPasswordSchema = mongoose.Schema({
   otp: {
     type: String,
   },
@@ -14,6 +14,6 @@ const verifySchema = mongoose.Schema({
   //   },
 });
 
-const Verify = mongoose.model("Verify", verifySchema);
+const VerifyPassword = mongoose.model("VerifyPassword", verifyPasswordSchema);
 
-module.exports = Verify;
+module.exports = VerifyPassword;

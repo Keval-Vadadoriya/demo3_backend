@@ -7,11 +7,13 @@ const addtochatlist = async (socket, userid, role, workerid) => {
   const userId = role === "user" ? userid : workerid;
   const workerId = role === "worker" ? userid : workerid;
 
-  console.log("addtochatlist");
   list = await UserChatList.findOne({ user: userId });
   if (list) {
-    if (list.workers.findIndex((worker) => worker.user === workerId) !== -1) {
-      console.log("hi");
+    if (
+      list.workers.findIndex(
+        (worker) => worker.user.toString() === workerId
+      ) === -1
+    ) {
       list.workers.unshift({ user: workerId });
       await list.save();
       chats = new Chats({ user: userId, worker: workerId });
@@ -20,10 +22,8 @@ const addtochatlist = async (socket, userid, role, workerid) => {
       chats = await Chats.findOne({ user: userId, worker: workerId })
         .populate("user")
         .populate("worker");
-      console.log(chats);
     }
   } else {
-    console.log("hi");
     list = new UserChatList({
       user: userId,
       workers: [{ user: workerId }],
@@ -32,7 +32,6 @@ const addtochatlist = async (socket, userid, role, workerid) => {
 
     chats = new Chats({ user: userId, worker: workerId });
     chats.chats = [];
-    console;
     await chats.save();
     chats = await Chats.findOne({ user: userId, worker: workerId })
       .populate("user")
@@ -42,8 +41,10 @@ const addtochatlist = async (socket, userid, role, workerid) => {
   //kjhkgjk
   list2 = await WorkerChatList.findOne({ worker: workerId });
   if (list2) {
-    if (list.workers.findIndex((user) => user.user === userId) !== -1) {
-      list2.users.push({ user: userId });
+    if (
+      list2.users.findIndex((user) => user.user.toString() === userId) === -1
+    ) {
+      list2.users.unshift({ user: userId });
       await list2.save();
     }
   } else {
@@ -51,6 +52,7 @@ const addtochatlist = async (socket, userid, role, workerid) => {
       worker: workerId,
       users: [{ user: userId }],
     });
+
     await list2.save();
   }
   if (role === "user") {
@@ -64,8 +66,6 @@ const addtochatlist = async (socket, userid, role, workerid) => {
       select: { name: 1, _id: 1, avatar: 1 },
     });
   }
-
-  console.log(chats);
 
   socket.emit("chatlist", list[role === "user" ? "workers" : "users"], chats);
 };

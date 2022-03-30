@@ -1,7 +1,9 @@
 const obj = require("./users");
 const Chats = require("../models/Chats");
+const WorkerChatList = require("../models/WorkerChatList");
+const UserChatList = require("../models/UserChatList");
 const getchats = async (socket, userId, role, receiverId, callback) => {
-  let chats;
+  let chats, chatList;
   console.log("sfsd");
   chats = await Chats.findOne({
     user: role === "user" ? userId : receiverId,
@@ -10,17 +12,6 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
     .populate({ path: "user", select: { name: 1, _id: 0 } })
     .populate({ path: "worker", select: { name: 1, _id: 0 } });
 
-  //testing
-  // const xy = await Chats.aggregate([
-  //   { $unwind: "$chats" },
-  //   { $match: { user: req.params.id, worker: req.query.id } },
-  //   {
-  //     $group: {
-  //       // _id: "$worker",
-  //       averageReview: { $count: "$chats" },
-  //     },
-  //   },
-  // ]);
   console.log("xy");
 
   const data = await Chats.findOne({
@@ -38,8 +29,42 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
       }
     });
   }
+
+  //count==0
+  if (role === "worker") {
+    chatList = await WorkerChatList.findOneAndUpdate(
+      { worker: userId },
+      {
+        $set: { "users.$[x].count": 0 },
+      },
+      { arrayFilters: [{ "x.user": receiverId }] }
+    );
+    console.log("b", chatList);
+  } else {
+    chatList = await UserChatList.findOneAndUpdate(
+      { user: userId },
+      {
+        $set: { "workers.$[x].count": 0 },
+      },
+      { arrayFilters: [{ "x.user": receiverId }] }
+    );
+    console.log("a", chatList);
+  }
+  if (role === "worker") {
+    chatList = await WorkerChatList.findOne({ worker: userId }).populate({
+      path: "users.user",
+      select: { _id: 1, name: 1, avatar: 1 },
+    });
+  } else {
+    chatList = await UserChatList.findOne({ user: userId }).populate({
+      path: "workers.user",
+      select: { _id: 1, name: 1, avatar: 1 },
+    });
+  }
+
   callback({
     chats: chats === null ? [] : chats,
+    chatList: chatList[role === "user" ? "workers" : "users"],
   });
 
   await Chats.findOneAndUpdate(

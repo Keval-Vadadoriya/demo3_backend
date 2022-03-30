@@ -3,9 +3,18 @@ const Chats = require("../models/Chats");
 const UserChatList = require("../models/UserChatList");
 const WorkerChatList = require("../models/WorkerChatList");
 
-const delivered = async (socket, _id, sender, receiver, role) => {
+const delivered = async (
+  socket,
+  _id,
+  sender,
+  receiver,
+  role,
+  active,
+  callback
+) => {
+  console.log(active);
   let chatList;
-  console.log(role, "duhfd");
+  console.log(_id, role, sender, receiver, "duhfd");
   await Chats.findOneAndUpdate(
     {
       user: role === "user" ? sender : receiver,
@@ -14,28 +23,38 @@ const delivered = async (socket, _id, sender, receiver, role) => {
     { $set: { "chats.$[x].status": "delivered" } },
     { arrayFilters: [{ "x._id": _id }] }
   );
+  if (obj[receiver]) {
+    socket.to(obj[sender]).emit("messageDelivered", _id);
+  }
   if (role === "user") {
     chatList = await WorkerChatList.findOneAndUpdate(
-      { worker: sender },
+      { worker: receiver },
       {
-        $inc: { "users.$[x].count": -1 },
+        $inc: { "users.$[x].count": active ? -1 : 0 },
       },
-      { arrayFilters: [{ "x.user": receiver }] }
+      { arrayFilters: [{ "x.user": sender }] }
     );
-    console.log("b", chatList);
   } else {
     chatList = await UserChatList.findOneAndUpdate(
-      { worker: sender },
+      { user: receiver },
       {
-        $inc: { "workers.$[x].count": -1 },
+        $inc: { "workers.$[x].count": active ? -1 : 0 },
       },
-      { arrayFilters: [{ "x.user": receiver }] }
+      { arrayFilters: [{ "x.user": sender }] }
     );
-    console.log("a", chatList);
   }
 
-  if (obj[receiver]) {
-    socket.to(obj[receiver]).emit("messageDelivered", _id);
+  if (role === "user") {
+    chatList = await WorkerChatList.findOne({ worker: receiver }).populate({
+      path: "users.user",
+      select: { _id: 1, name: 1, avatar: 1 },
+    });
+  } else {
+    chatList = await UserChatList.findOne({ user: receiver }).populate({
+      path: "workers.user",
+      select: { _id: 1, name: 1, avatar: 1 },
+    });
   }
+  callback({ chatList: chatList[role === "user" ? "users" : "workers"] });
 };
 module.exports = delivered;

@@ -10,9 +10,9 @@ const addtochatlist = async (socket, userid, role, workerid) => {
   console.log("addtochatlist");
   list = await UserChatList.findOne({ user: userId });
   if (list) {
-    if (!list.workers.includes(workerId)) {
+    if (list.workers.findIndex((worker) => worker.user === workerId) !== -1) {
       console.log("hi");
-      list.workers.unshift(workerId);
+      list.workers.unshift({ user: workerId });
       await list.save();
       chats = new Chats({ user: userId, worker: workerId });
       chats.chats = [];
@@ -26,40 +26,41 @@ const addtochatlist = async (socket, userid, role, workerid) => {
     console.log("hi");
     list = new UserChatList({
       user: userId,
-      workers: [workerId],
+      workers: [{ user: workerId }],
     });
     await list.save();
+
     chats = new Chats({ user: userId, worker: workerId });
     chats.chats = [];
+    console;
     await chats.save();
     chats = await Chats.findOne({ user: userId, worker: workerId })
       .populate("user")
       .populate("worker");
-    console.log(chats);
   }
 
   //kjhkgjk
   list2 = await WorkerChatList.findOne({ worker: workerId });
   if (list2) {
-    if (!list2.users.includes(userId)) {
-      list2.users.push(userId);
+    if (list.workers.findIndex((user) => user.user === userId) !== -1) {
+      list2.users.push({ user: userId });
       await list2.save();
     }
   } else {
     list2 = new WorkerChatList({
       worker: workerId,
-      users: [userId],
+      users: [{ user: userId }],
     });
     await list2.save();
   }
   if (role === "user") {
     list = await UserChatList.findOne({ user: userId }).populate({
-      path: "workers",
+      path: "workers.user",
       select: { name: 1, _id: 1, avatar: 1 },
     });
   } else {
     list = await WorkerChatList.findOne({ worker: workerId }).populate({
-      path: "users",
+      path: "users.user",
       select: { name: 1, _id: 1, avatar: 1 },
     });
   }

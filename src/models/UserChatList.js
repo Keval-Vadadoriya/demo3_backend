@@ -7,9 +7,15 @@ const userChatListSchema = mongoose.Schema({
   },
   workers: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Worker",
-      default: [],
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Worker",
+        default: [],
+      },
+      count: {
+        type: Number,
+        default: 0,
+      },
     },
   ],
 });

@@ -3,18 +3,8 @@ const Chats = require("../models/Chats");
 const UserChatList = require("../models/UserChatList");
 const WorkerChatList = require("../models/WorkerChatList");
 
-const delivered = async (
-  socket,
-  _id,
-  sender,
-  receiver,
-  role,
-  active,
-  callback
-) => {
-  console.log(active);
+const delivered = async (socket, _id, sender, receiver, role, callback) => {
   let chatList;
-  console.log(_id, role, sender, receiver, "duhfd");
   await Chats.findOneAndUpdate(
     {
       user: role === "user" ? sender : receiver,
@@ -30,7 +20,7 @@ const delivered = async (
     chatList = await WorkerChatList.findOneAndUpdate(
       { worker: receiver },
       {
-        $inc: { "users.$[x].count": active ? -1 : 0 },
+        $inc: { "users.$[x].count": 0 },
       },
       { arrayFilters: [{ "x.user": sender }] }
     );
@@ -38,7 +28,7 @@ const delivered = async (
     chatList = await UserChatList.findOneAndUpdate(
       { user: receiver },
       {
-        $inc: { "workers.$[x].count": active ? -1 : 0 },
+        $inc: { "workers.$[x].count": 0 },
       },
       { arrayFilters: [{ "x.user": sender }] }
     );

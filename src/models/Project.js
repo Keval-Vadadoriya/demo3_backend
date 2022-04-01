@@ -39,6 +39,14 @@ const projectSchema = mongoose.Schema(
   }
 );
 
+projectSchema.post("save", function (error, doc, next) {
+  if (error.code === 11000) {
+    next(new Error("Project Name Already Exists"));
+  } else {
+    next();
+  }
+});
+
 const Project = mongoose.model("Project", projectSchema);
 
 module.exports = Project;

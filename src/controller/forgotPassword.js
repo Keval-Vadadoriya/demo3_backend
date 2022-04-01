@@ -1,7 +1,5 @@
 const User = require("../models/User");
 const Worker = require("../models/Worker");
-const Review = require("../models/Review");
-const Verify = require("../models/Verify");
 const otpGenerator = require("otp-generator");
 const sendEmail = require("../extra/sendEmail");
 const VerifyPassword = require("../models/VerifyPassword");
@@ -17,7 +15,7 @@ const forgotPassword = async (req, res) => {
     }
 
     if (!user) {
-      throw new Error("Invalid Email or Role");
+      throw new Error("Invalid Email");
     }
 
     const otp = otpGenerator.generate(6, {
@@ -28,7 +26,6 @@ const forgotPassword = async (req, res) => {
     //Verify model
     const verify = new VerifyPassword({ otp: otp, user: user._id });
     verify.save();
-    console.log("sdihf");
     res.status(201).send({});
   } catch (e) {
     console.log(e.message);

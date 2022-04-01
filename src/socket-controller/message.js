@@ -88,7 +88,7 @@ const message = async (
   if (obj[receiver]) {
     socket
       .to(obj[receiver])
-      .emit("messag", { message, role, sender, receiver });
+      .emit("message", { message, role, sender, receiver });
     socket
       .to(obj[receiver])
       .emit("chatlist", chatlist2[role === "user" ? "users" : "workers"]);

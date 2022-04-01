@@ -11,7 +11,6 @@ const forgotPassword = async (req, res) => {
     //orginal
     let user;
     console.log(req.body);
-    // if (req.body.role === "worker") {
     user = await Worker.findOne({ email: req.body.email });
     if (!user) {
       user = await User.findOne({ email: req.body.email });
@@ -30,7 +29,6 @@ const forgotPassword = async (req, res) => {
     const verify = new VerifyPassword({ otp: otp, user: user._id });
     verify.save();
     console.log("sdihf");
-    // res.status(201).send({ user, token });
     res.status(201).send({});
   } catch (e) {
     console.log(e.message);

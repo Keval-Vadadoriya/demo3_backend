@@ -19,6 +19,7 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
     worker: role === "user" ? receiverId : userId,
   });
 
+  //message delivered
   if (data) {
     data.chats.forEach((chat) => {
       if (chat.status === "sent") {
@@ -67,6 +68,7 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
     chatList: chatList[role === "user" ? "workers" : "users"],
   });
 
+  //updating status
   await Chats.findOneAndUpdate(
     {
       user: role === "user" ? userId : receiverId,

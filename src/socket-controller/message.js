@@ -27,7 +27,7 @@ const message = async (
   chat.chats.push(message);
   await chat.save();
 
-  //sort chat list 1
+  //sorting  user chatlist
 
   chatlist = await UserChatList.findOne({
     user: role === "user" ? sender : receiver,
@@ -42,7 +42,7 @@ const message = async (
   chatlist["workers"].unshift(worker[0]);
   await chatlist.save();
 
-  //sort list 2
+  //sorting worker chatlist
   chatlist2 = await WorkerChatList.findOne({
     worker: role === "user" ? receiver : sender,
   });

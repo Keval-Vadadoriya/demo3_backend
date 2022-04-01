@@ -16,6 +16,8 @@ const delivered = async (socket, _id, sender, receiver, role, callback) => {
   if (obj[receiver]) {
     socket.to(obj[sender]).emit("messageDelivered", _id);
   }
+
+  //count
   if (role === "user") {
     chatList = await WorkerChatList.findOneAndUpdate(
       { worker: receiver },

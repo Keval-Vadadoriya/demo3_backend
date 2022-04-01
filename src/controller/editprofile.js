@@ -14,9 +14,7 @@ const editprofile = async (req, res) => {
     if (req.body.availability === "false") {
       req.body.availability = false;
     }
-    if (req.body.password) {
-      req.body.password = await bcrypt.hash(req.body.password, 8);
-    }
+
     if (req.file) {
       req.body.avatar = `uploads/${req.file.filename}`;
     }
@@ -33,6 +31,15 @@ const editprofile = async (req, res) => {
       if (!user) {
         throw new Error("no worker found");
       }
+    }
+    if (req.body.password && req.body.newpassword) {
+      const ismatch = await bcrypt.compare(req.body.password, user.password);
+      if (!ismatch) {
+        throw new Error("Invalid Password");
+      }
+      req.body.password = req.body.newpassword;
+      delete req.body.newpassword;
+      req.body.password = await bcrypt.hash(req.body.password, 8);
     }
     if (req.body.avatar && user.avatar !== "uploads/default.jpg") {
       fs.unlinkSync(user.avatar);

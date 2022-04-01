@@ -5,16 +5,13 @@ const express = require("express");
 const auth = require("../middleware/Auth");
 
 //controllers
-const registerUser = require("../controller/registerUser");
-const loginUser = require("../controller/loginUser");
+
 const reviewWorker = require("../controller/reviewWorker");
 const getreviews = require("../controller/getreviews");
 const getallworkers = require("../controller/getallworkers");
 const filterworkers = require("../controller/filterworkers");
 const getworker = require("../controller/getworker");
-const getchatlist = require("../controller/getchatlist");
-const getchats = require("../controller/getchats");
-const addtochatlist = require("../controller/addtochatlist");
+
 const editprofile = require("../controller/editprofile");
 const getprofile = require("../controller/getprofile");
 const postproject = require("../controller/postproject");
@@ -60,16 +57,9 @@ const upload = multer({
 });
 
 // //   register user
-// router.post("/signup", registerUser);
-
-//   login user
-router.post("/login", loginUser);
 
 //Reviews
 router.post("/review/:workerId", auth, reviewWorker);
-
-//add to chat-list
-router.post("/addtochatlist/:id", auth, addtochatlist);
 
 //edit profile
 router.post("/editprofile/:id", [upload.single("avatar"), auth], editprofile);
@@ -88,12 +78,6 @@ router.get("/getworker/:workerId", auth, getworker);
 
 //get all workers
 router.get("/filterworkers", auth, filterworkers);
-
-//get chat-list
-router.get("/getchatlist/:id", auth, getchatlist);
-
-//get chats
-router.get("/getchats/:id", auth, getchats);
 
 //PROJECT
 

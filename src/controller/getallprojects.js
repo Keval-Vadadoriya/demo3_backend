@@ -3,8 +3,8 @@ const Project = require("../models/Project");
 const getallprojects = async (req, res) => {
   try {
     let projects;
-    const cw = await Project.find();
-    const count = cw.length;
+    const cp = await Project.find();
+    const count = cp.length;
     console.log(count);
     if (req.role === "worker") {
       projects = await Project.find()

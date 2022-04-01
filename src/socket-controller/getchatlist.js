@@ -5,7 +5,6 @@ const getchatlist = async (socket, sender, role) => {
   //chatlist
   let list;
 
-  // console.log(sender, userId, obj);
   if (role === "worker") {
     list = await WorkerChatList.findOne({ worker: sender }).populate({
       path: "users.user",

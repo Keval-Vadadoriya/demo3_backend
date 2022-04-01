@@ -3,10 +3,11 @@ const UserChatList = require("../models/UserChatList");
 const Chats = require("../models/Chats");
 
 const addtochatlist = async (socket, userid, role, workerid) => {
-  let list2, list, chats;
+  let list, chats;
   const userId = role === "user" ? userid : workerid;
   const workerId = role === "worker" ? userid : workerid;
 
+  //add to user chat list
   list = await UserChatList.findOne({ user: userId });
   if (list) {
     if (
@@ -38,23 +39,24 @@ const addtochatlist = async (socket, userid, role, workerid) => {
       .populate("worker");
   }
 
-  //kjhkgjk
-  list2 = await WorkerChatList.findOne({ worker: workerId });
-  if (list2) {
+  //add to worker chat list
+  list = await WorkerChatList.findOne({ worker: workerId });
+  if (list) {
     if (
-      list2.users.findIndex((user) => user.user.toString() === userId) === -1
+      list.users.findIndex((user) => user.user.toString() === userId) === -1
     ) {
-      list2.users.unshift({ user: userId });
-      await list2.save();
+      list.users.unshift({ user: userId });
+      await list.save();
     }
   } else {
-    list2 = new WorkerChatList({
+    list = new WorkerChatList({
       worker: workerId,
       users: [{ user: userId }],
     });
 
-    await list2.save();
+    await list.save();
   }
+
   if (role === "user") {
     list = await UserChatList.findOne({ user: userId }).populate({
       path: "workers.user",

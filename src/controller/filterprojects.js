@@ -37,6 +37,9 @@ const filterprojects = async (req, res) => {
           .skip(req.query.skip);
       }
     }
+    if (req.query.length !== 0) {
+      count = 0;
+    }
 
     console.log(projects);
     if (projects.length === 0) {

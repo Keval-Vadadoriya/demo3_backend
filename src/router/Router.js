@@ -62,7 +62,7 @@ const upload = multer({
 router.post("/review/:workerId", auth, reviewWorker);
 
 //edit profile
-router.post("/editprofile/:id", [upload.single("avatar"), auth], editprofile);
+router.patch("/editprofile/:id", [upload.single("avatar"), auth], editprofile);
 
 //get profile
 router.get("/getprofile", auth, getprofile);

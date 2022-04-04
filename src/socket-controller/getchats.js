@@ -9,8 +9,8 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
     user: role === "user" ? userId : receiverId,
     worker: role === "user" ? receiverId : userId,
   })
-    .populate({ path: "user", select: { name: 1, _id: 0 } })
-    .populate({ path: "worker", select: { name: 1, _id: 0 } });
+    .populate({ path: "user", select: { name: 1, _id: 0, avatar: 1 } })
+    .populate({ path: "worker", select: { name: 1, _id: 0, avatar: 1 } });
 
   console.log("xy");
 

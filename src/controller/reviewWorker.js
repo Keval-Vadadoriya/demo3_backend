@@ -20,6 +20,7 @@ const reviewWorker = async (req, res) => {
 
     const worker = await Worker.findOne({ worker: req.params.id });
     worker.review = xyz[0]?.averageReview;
+    console.log(worker, xyz[0]?.averageReview, worker.review);
     worker.save();
     res.status(200).send(review.reviews);
   } catch (e) {

@@ -8,6 +8,7 @@ const getmyprojects = async (req, res) => {
     console.log(count);
     if (req.role === "user") {
       myProjects = await Project.find({ owner: req.userId })
+        .sort({ createdAt: -1 })
         .limit(req.query.limit)
         .skip(req.query.skip);
     }

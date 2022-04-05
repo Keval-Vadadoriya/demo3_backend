@@ -17,15 +17,26 @@ const filterprojects = async (req, res) => {
       }
     }
     count = projects.length;
-    console.log("dsfu", count);
+    console.log(req.query);
     if (req.role === "worker") {
-      if (req.query.money || Number(req.query.money) === 0) {
-        const parameters = JSON.parse(JSON.stringify(req.query));
-        delete parameters.money;
-        projects = await Project.find({
-          money: { $gte: req.query.money },
-          ...parameters,
-        })
+      if (req.query.sort === "latest") {
+        projects = await Project.find(req.query)
+          .sort({ createdAt: -1 })
+          .limit(req.query.limit)
+          .skip(req.query.skip);
+      } else if (req.query.sort === "oldest") {
+        projects = await Project.find(req.query)
+          .sort({ createdAt: 1 })
+          .limit(req.query.limit)
+          .skip(req.query.skip);
+      } else if (req.query.sort === "highestPrice") {
+        projects = await Project.find(req.query)
+          .sort({ money: -1 })
+          .limit(req.query.limit)
+          .skip(req.query.skip);
+      } else if (req.query.sort === "lowestPrice") {
+        projects = await Project.find(req.query)
+          .sort({ money: 1 })
           .limit(req.query.limit)
           .skip(req.query.skip);
       } else {

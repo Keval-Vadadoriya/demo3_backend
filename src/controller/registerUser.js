@@ -19,7 +19,7 @@ const registerUser = async (req, res) => {
     if (req.query.role === "worker") {
       const exist = await User.findOne({ email: req.body.email });
       if (exist) {
-        throw new Error("Already Exist");
+        throw new Error("Email Already Exist");
       }
       user = new Worker(req.body);
 
@@ -32,9 +32,9 @@ const registerUser = async (req, res) => {
       console.log("aa");
       const exist = await Worker.findOne({ email: req.body.email });
       if (exist) {
-        throw new Error("Already Exist");
+        throw new Error("Email Already Exist");
       }
-
+      console.log(req.body);
       user = new User(req.body);
       console.log(user);
     }

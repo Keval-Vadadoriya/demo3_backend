@@ -25,7 +25,7 @@ const verifyUser = async (req, res) => {
         await Verify.findOneAndDelete({ otp: req.query.id });
       }
       const token = await user.generateAuthToken(role);
-      res.send({ user, token });
+      res.send({ user, token, role });
     } else {
       throw new Error("Invalid2");
     }

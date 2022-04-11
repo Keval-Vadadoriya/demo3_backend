@@ -16,7 +16,7 @@ const getallworkers = async (req, res) => {
     }
     console.log(req.query.skip);
     if (req.query.skip !== "0") {
-      count = null;
+      count = 0;
     }
     console.log(count);
 

@@ -17,7 +17,6 @@ const reviewSchema = mongoose.Schema({
       },
       owner: {
         type: mongoose.Schema.Types.ObjectId,
-        unique: true,
         ref: "User",
       },
     },

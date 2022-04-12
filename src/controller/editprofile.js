@@ -23,16 +23,19 @@ const editprofile = async (req, res) => {
     if (req.role === "user") {
       user = await User.findOne({ _id: req.userId });
       if (!user) {
-        throw new Error("no user found");
+        throw new Error("no data found");
       }
     }
     if (req.role === "worker") {
       user = await Worker.findOne({ _id: req.userId });
       if (!user) {
-        throw new Error("no worker found");
+        throw new Error("no data found");
       }
     }
     if (req.body.password && req.body.newpassword) {
+      if (req.body.newpassword.length < 7) {
+        throw new Error("Too Short");
+      }
       const ismatch = await bcrypt.compare(req.body.password, user.password);
       if (!ismatch) {
         throw new Error("Invalid Password");
@@ -62,7 +65,6 @@ const editprofile = async (req, res) => {
     }
     res.send(user);
   } catch (e) {
-    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

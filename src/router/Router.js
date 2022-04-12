@@ -46,23 +46,33 @@ const filefilter = (req, file, cb) => {
   ) {
     cb(null, true);
   } else {
-    cb(new Error("Ivalid file formate"), false);
+    cb(new Error("Invalid file formate"), false);
   }
 };
 
 const upload = multer({
   storage: storage,
   fileFilter: filefilter,
-  limits: 1000000,
-});
+  limits: {
+    fileSize: 104858, // 1 Mb
+  },
+}).single("avatar");
 
+const uploadFile = async (req, res, next) => {
+  upload(req, res, function (err) {
+    if (err) {
+      return res.status(400).send({ Error: err.message });
+    }
+    next();
+  });
+};
 // //   register user
 
 //Reviews
 router.post("/review/:workerId", auth, reviewWorker);
 
 //edit profile
-router.patch("/editprofile/:id", [upload.single("avatar"), auth], editprofile);
+router.patch("/editprofile/:id", [uploadFile, auth], editprofile);
 
 //get profile
 router.get("/getprofile", auth, getprofile);
@@ -71,7 +81,7 @@ router.get("/getprofile", auth, getprofile);
 router.get("/getreview/:workerId", auth, getreviews);
 
 //get all workers
-router.get("/getallworkers", auth, getallworkers);
+router.get("/getallworkers/:search", auth, getallworkers);
 
 //get worker
 router.get("/getworker/:workerId", auth, getworker);
@@ -85,7 +95,7 @@ router.get("/filterworkers", auth, filterworkers);
 router.post("/project", auth, postproject);
 
 //get all project
-router.get("/getallprojects", auth, getallprojects);
+router.get("/getallprojects/:search", auth, getallprojects);
 
 //my projects
 router.get("/getmyprojects", auth, getmyprojects);

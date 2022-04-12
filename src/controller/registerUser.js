@@ -11,7 +11,6 @@ const registerUser = async (req, res) => {
       upperCaseAlphabets: false,
       specialChars: false,
     });
-    sendEmail(otp);
 
     //orginal
     let user;
@@ -47,7 +46,7 @@ const registerUser = async (req, res) => {
     const verify = new Verify({ otp: otp, user: user._id });
     verify.save();
 
-    // res.status(201).send({ user, token });
+    sendEmail(otp, req.body.email);
     res.status(201).send({ _id: user._id });
   } catch (e) {
     console.log(e.message);

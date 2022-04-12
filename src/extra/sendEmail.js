@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const sendEmail = async (otp) => {
+const sendEmail = async (otp, email) => {
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
@@ -12,7 +12,8 @@ const sendEmail = async (otp) => {
 
   let info = await transporter.sendMail({
     from: "demoproject2608@gmail.com",
-    to: "keval.180410107122@gmail.com",
+    to: email,
+    // to: "keval.180410107122@gmail.com",
     subject: "Please confirm your Email account",
     text: "Hello world?",
     html: "<h1>" + otp + "</h1>",

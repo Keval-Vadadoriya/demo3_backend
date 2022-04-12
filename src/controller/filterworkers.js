@@ -39,12 +39,9 @@ const filterworkers = async (req, res) => {
       throw new Error("No Workers Found");
     }
     if (req.query.skip !== "0") {
-      count = null;
+      count = 0;
     }
     console.log(count);
-    // setTimeout(() => {
-    //   return res.send({ workers, count });
-    // }, 5000);
     res.send({ workers, count });
   } catch (e) {
     console.log(e.message);

@@ -9,7 +9,7 @@ const reviewWorker = async (req, res) => {
     await review.save();
     const xyz = await Review.aggregate([
       { $unwind: "$reviews" },
-      { $match: { worker: mongoose.Types.ObjectId(req.params.id) } },
+      { $match: { worker: mongoose.Types.ObjectId(req.params.workerId) } },
       {
         $group: {
           _id: "$worker",
@@ -17,9 +17,11 @@ const reviewWorker = async (req, res) => {
         },
       },
     ]);
+    console.log("aggr", xyz);
 
-    const worker = await Worker.findOne({ worker: req.params.id });
+    const worker = await Worker.findOne({ worker: req.params.workerId });
     worker.review = xyz[0]?.averageReview;
+    console.log(xyz[0]?.averageReview, worker.review);
     worker.save();
     res.status(200).send(review.reviews);
   } catch (e) {

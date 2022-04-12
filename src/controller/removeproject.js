@@ -9,7 +9,6 @@ const removeproject = async (req, res) => {
         owner: req.userId,
       });
     }
-    // review.reviews.push(req.body);
 
     res.status(200).send(project);
   } catch (e) {

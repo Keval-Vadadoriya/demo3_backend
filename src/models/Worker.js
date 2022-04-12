@@ -107,6 +107,19 @@ workerSchema.methods.hashPswd = async function () {
   return user;
 };
 
+workerSchema.post("save", function (error, doc, next) {
+  if (error.code === 11000) {
+    if (error.keyPattern.name === 1) {
+      next(new Error("Name Already Exists"));
+    }
+    if (error.keyPattern.email === 1) {
+      next(new Error("Email Already Exists"));
+    }
+  } else {
+    next();
+  }
+});
+
 const Worker = mongoose.model("Worker", workerSchema);
 
 module.exports = Worker;

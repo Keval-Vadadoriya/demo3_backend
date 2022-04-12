@@ -5,16 +5,13 @@ const express = require("express");
 const auth = require("../middleware/Auth");
 
 //controllers
-const registerUser = require("../controller/registerUser");
-const loginUser = require("../controller/loginUser");
+
 const reviewWorker = require("../controller/reviewWorker");
 const getreviews = require("../controller/getreviews");
 const getallworkers = require("../controller/getallworkers");
 const filterworkers = require("../controller/filterworkers");
 const getworker = require("../controller/getworker");
-const getchatlist = require("../controller/getchatlist");
-const getchats = require("../controller/getchats");
-const addtochatlist = require("../controller/addtochatlist");
+
 const editprofile = require("../controller/editprofile");
 const getprofile = require("../controller/getprofile");
 const postproject = require("../controller/postproject");
@@ -49,30 +46,33 @@ const filefilter = (req, file, cb) => {
   ) {
     cb(null, true);
   } else {
-    cb(new Error("Ivalid file formate"), false);
+    cb(new Error("Invalid file formate"), false);
   }
 };
 
 const upload = multer({
   storage: storage,
   fileFilter: filefilter,
-  limits: 1000000,
-});
+  limits: {
+    fileSize: 104858, // 1 Mb
+  },
+}).single("avatar");
 
+const uploadFile = async (req, res, next) => {
+  upload(req, res, function (err) {
+    if (err) {
+      return res.status(400).send({ Error: err.message });
+    }
+    next();
+  });
+};
 // //   register user
-// router.post("/signup", registerUser);
-
-//   login user
-router.post("/login", loginUser);
 
 //Reviews
 router.post("/review/:workerId", auth, reviewWorker);
 
-//add to chat-list
-router.post("/addtochatlist/:id", auth, addtochatlist);
-
 //edit profile
-router.post("/editprofile/:id", [upload.single("avatar"), auth], editprofile);
+router.patch("/editprofile/:id", [uploadFile, auth], editprofile);
 
 //get profile
 router.get("/getprofile", auth, getprofile);
@@ -81,7 +81,7 @@ router.get("/getprofile", auth, getprofile);
 router.get("/getreview/:workerId", auth, getreviews);
 
 //get all workers
-router.get("/getallworkers", auth, getallworkers);
+router.get("/getallworkers/:search", auth, getallworkers);
 
 //get worker
 router.get("/getworker/:workerId", auth, getworker);
@@ -89,19 +89,13 @@ router.get("/getworker/:workerId", auth, getworker);
 //get all workers
 router.get("/filterworkers", auth, filterworkers);
 
-//get chat-list
-router.get("/getchatlist/:id", auth, getchatlist);
-
-//get chats
-router.get("/getchats/:id", auth, getchats);
-
 //PROJECT
 
 //post project
 router.post("/project", auth, postproject);
 
 //get all project
-router.get("/getallprojects", auth, getallprojects);
+router.get("/getallprojects/:search", auth, getallprojects);
 
 //my projects
 router.get("/getmyprojects", auth, getmyprojects);

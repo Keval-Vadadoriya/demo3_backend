@@ -2,20 +2,32 @@ const Project = require("../models/Project");
 
 const getallprojects = async (req, res) => {
   try {
-    let projects;
-    const cw = await Project.find();
-    const count = cw.length;
-    console.log(count);
-    if (req.role === "worker") {
+    let projects, search;
+    if (req.params.search === "null") {
+      projects = await Project.find();
+    } else {
+      search = new RegExp(req.params.search, "i");
+      if (req.role === "worker") {
+        projects = await Project.find({ project_name: { $regex: search } });
+      } else {
+        throw new Error("Unauthorized");
+      }
+    }
+    const count = projects.length;
+
+    if (req.params.search === "null") {
       projects = await Project.find()
         .limit(req.query.limit)
         .skip(req.query.skip);
+    } else {
+      projects = await Project.find({ project_name: { $regex: search } })
+        .limit(req.query.limit)
+        .skip(req.query.skip);
     }
-    //
 
-    console.log(projects);
     if (projects.length === 0) {
-      throw new Error("No Workers Found");
+      projects = [];
+      // throw new Error("No Workers Found");
     }
 
     res.send({ projects, count });

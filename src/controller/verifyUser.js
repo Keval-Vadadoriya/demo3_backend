@@ -18,16 +18,16 @@ const verifyUser = async (req, res) => {
         role = "worker";
       }
       if (!user) {
-        throw new Error("Invalid");
+        throw new Error("Invalid otp");
       } else {
         user.active = true;
         await user.save();
-        await Verify.findOneAndDelete({ otp: req.query.id });
+        await Verify.findOneAndDelete({ otp: req.query.otp });
       }
       const token = await user.generateAuthToken(role);
-      res.send({ user, token });
+      res.send({ user, token, role });
     } else {
-      throw new Error("Invalid2");
+      throw new Error("Invalid Otp");
     }
   } catch (e) {
     console.log(e.message);

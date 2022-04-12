@@ -22,7 +22,7 @@ const io = socketIo(server, {
     methods: ["GET", "POST"],
   },
 });
-const port = process.env.port;
+const port = process.env.PORT;
 app.use(cors());
 
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));

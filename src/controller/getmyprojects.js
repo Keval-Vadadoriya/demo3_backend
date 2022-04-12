@@ -3,11 +3,12 @@ const Project = require("../models/Project");
 const getmyprojects = async (req, res) => {
   try {
     let myProjects;
-    const cw = await Project.find({ owner: req.userId });
-    const count = cw.length;
+    const cmp = await Project.find({ owner: req.userId });
+    const count = cmp.length;
     console.log(count);
     if (req.role === "user") {
       myProjects = await Project.find({ owner: req.userId })
+        .sort({ createdAt: -1 })
         .limit(req.query.limit)
         .skip(req.query.skip);
     }

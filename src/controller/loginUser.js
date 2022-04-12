@@ -6,6 +6,8 @@ const Verify = require("../models/Verify");
 
 const loginUser = async (req, res) => {
   try {
+    console.log("1dfhdf");
+
     let user = null,
       role = "user";
 
@@ -17,6 +19,7 @@ const loginUser = async (req, res) => {
     if (!user) {
       throw new Error("Invalid Email");
     }
+    console.log("2dfhdf");
 
     if (user.active === false) {
       const otp = otpGenerator.generate(6, {
@@ -28,7 +31,10 @@ const loginUser = async (req, res) => {
       await verify.save();
       throw new Error("Plese Verify Your Email");
     }
+    console.log("3dfhdf");
+
     const token = await user.generateAuthToken(role);
+    console.log("dfhdf");
     res.send({ user, token, role });
   } catch (e) {
     console.log(e.message);

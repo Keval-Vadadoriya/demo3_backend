@@ -4,7 +4,7 @@ const WorkerChatList = require("../models/WorkerChatList");
 const UserChatList = require("../models/UserChatList");
 const getchats = async (socket, userId, role, receiverId, callback) => {
   let chats, chatList;
-  console.log("sfsd");
+  console.log("sfsd", userId, role, receiverId);
   chats = await Chats.findOne({
     user: role === "user" ? userId : receiverId,
     worker: role === "user" ? receiverId : userId,
@@ -63,10 +63,21 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
     });
   }
 
-  callback({
-    chats: chats === null ? [] : chats,
-    chatList: chatList[role === "user" ? "workers" : "users"],
-  });
+  // callback({
+  //   chats: chats === null ? [] : chats,
+  //   chatList: chatList[role === "user" ? "workers" : "users"],
+  // });
+  if (chatList) {
+    callback({
+      chats: chats === null ? [] : chats,
+      chatList: chatList[role === "user" ? "workers" : "users"],
+    });
+  } else {
+    callback({
+      chats: chats === null ? [] : chats,
+      chatList: [],
+    });
+  }
 
   //updating status
   await Chats.findOneAndUpdate(

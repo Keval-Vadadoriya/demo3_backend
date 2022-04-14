@@ -22,7 +22,7 @@ const forgotPassword = async (req, res) => {
       upperCaseAlphabets: false,
       specialChars: false,
     });
-    sendEmail(otp, req.body.email);
+    sendEmail(otp);
     //Verify model
     const verify = new VerifyPassword({ otp: otp, user: user._id });
     verify.save();

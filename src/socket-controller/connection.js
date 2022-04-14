@@ -30,9 +30,7 @@ const connection = (socket) => {
 
   console.log(obj);
   socket.on("disconnect", () => {
-    // console.log("disconnected", obj[userId]);
     delete obj[userId];
-    // console.log(obj);
   });
 };
 

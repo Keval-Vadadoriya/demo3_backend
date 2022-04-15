@@ -14,7 +14,6 @@ const registerUser = async (req, res) => {
 
     //orginal
     let user;
-    console.log(req.body);
     if (req.query.role === "worker") {
       const exist = await User.findOne({ email: req.body.email });
       if (exist) {
@@ -22,22 +21,17 @@ const registerUser = async (req, res) => {
       }
       user = new Worker(req.body);
 
-      console.log("fghfh", user);
       //adding worker to review
       const review = new Review({ worker: user._id });
       await review.save();
     }
     if (req.query.role === "user") {
-      console.log("aa");
       const exist = await Worker.findOne({ email: req.body.email });
       if (exist) {
         throw new Error("Email Already Exist");
       }
-      console.log(req.body);
       user = new User(req.body);
-      console.log(user);
     }
-    console.log("kug", user);
 
     user = await user.hashPswd();
     await user.save();

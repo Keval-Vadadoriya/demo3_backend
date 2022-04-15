@@ -3,7 +3,6 @@ const Worker = require("../models/Worker");
 const filterworkers = async (req, res) => {
   try {
     let workers, count;
-    console.log(req.query);
     if (req.query.review) {
       const parameters = JSON.parse(JSON.stringify(req.query));
       delete parameters.review;
@@ -41,10 +40,8 @@ const filterworkers = async (req, res) => {
     if (req.query.skip !== "0") {
       count = 0;
     }
-    console.log(count);
     res.send({ workers, count });
   } catch (e) {
-    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

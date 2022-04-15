@@ -2,10 +2,12 @@ const WorkerChatList = require("../models/WorkerChatList");
 const UserChatList = require("../models/UserChatList");
 const Chats = require("../models/Chats");
 
-const addtochatlist = async (socket, userid, role, workerid) => {
+const addtochatlist = async (socket, userid, role, workerid,callback) => {
   let list, chats;
   const userId = role === "user" ? userid : workerid;
   const workerId = role === "worker" ? userid : workerid;
+
+  console.log('im here')
 
   //add to user chat list
   list = await UserChatList.findOne({ user: userId });
@@ -57,6 +59,7 @@ const addtochatlist = async (socket, userid, role, workerid) => {
     await list.save();
   }
 
+  //chatlist
   if (role === "user") {
     list = await UserChatList.findOne({ user: userId }).populate({
       path: "workers.user",
@@ -69,6 +72,9 @@ const addtochatlist = async (socket, userid, role, workerid) => {
     });
   }
 
+  callback({
+    status:'success'
+  })
   socket.emit("chatlist", list[role === "user" ? "workers" : "users"], chats);
 };
 module.exports = addtochatlist;

@@ -8,7 +8,6 @@ const forgotPassword = async (req, res) => {
   try {
     //orginal
     let user;
-    console.log(req.body);
     user = await Worker.findOne({ email: req.body.email });
     if (!user) {
       user = await User.findOne({ email: req.body.email });
@@ -22,11 +21,11 @@ const forgotPassword = async (req, res) => {
       upperCaseAlphabets: false,
       specialChars: false,
     });
-    sendEmail(otp, req.body.email);
     //Verify model
     const verify = new VerifyPassword({ otp: otp, user: user._id });
     verify.save();
-    res.status(201).send({});
+    sendEmail(otp, req.body.email);
+    res.status(200).send({});
   } catch (e) {
     console.log(e.message);
     res.status(400).send({ Error: e.message });

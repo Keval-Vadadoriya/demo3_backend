@@ -1,8 +1,6 @@
 const obj = require("./users");
 const setId = (socket, id) => {
-  userId = id;
-  console.log("is", userId);
+  // userId = id;
   obj[id] = socket.id;
-  console.log("fdf", obj[userId], obj);
 };
 module.exports = setId;

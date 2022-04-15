@@ -3,8 +3,8 @@ const Project = require("../models/Project");
 const getmyprojects = async (req, res) => {
   try {
     let myProjects;
-    const cmp = await Project.find({ owner: req.userId });
-    const count = cmp.length;
+    myProjects = await Project.find({ owner: req.userId });
+    const count = myProjects.length;
     console.log(count);
     if (req.role === "user") {
       myProjects = await Project.find({ owner: req.userId })

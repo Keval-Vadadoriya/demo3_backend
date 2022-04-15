@@ -22,16 +22,16 @@ const editprofile = async (req, res) => {
     //find
     if (req.role === "user") {
       user = await User.findOne({ _id: req.userId });
-      if (!user) {
-        throw new Error("no data found");
-      }
     }
     if (req.role === "worker") {
       user = await Worker.findOne({ _id: req.userId });
-      if (!user) {
-        throw new Error("no data found");
-      }
+      
     }
+    if (!user) {
+      throw new Error("no data found");
+    }
+
+    //
     if (req.body.password && req.body.newpassword) {
       if (req.body.newpassword.length < 7) {
         throw new Error("Too Short");

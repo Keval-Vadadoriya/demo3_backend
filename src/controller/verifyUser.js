@@ -6,7 +6,6 @@ const verifyUser = async (req, res) => {
   try {
     let user,
       role = "user";
-    console.log("Domain is matched. Information is from Authentic email");
     const verify = await Verify.findOne({
       otp: req.params.otp,
     });

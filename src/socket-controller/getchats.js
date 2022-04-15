@@ -12,23 +12,26 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
     .populate({ path: "user", select: { name: 1, _id: 0, avatar: 1 } })
     .populate({ path: "worker", select: { name: 1, _id: 0, avatar: 1 } });
 
-  console.log("xy");
+  console.log("xy",chats);
 
-  const data = await Chats.findOne({
-    user: role === "user" ? userId : receiverId,
-    worker: role === "user" ? receiverId : userId,
-  });
+  // const data = await Chats.findOne({
+  //   user: role === "user" ? userId : receiverId,
+  //   worker: role === "user" ? receiverId : userId,
+  // });
 
   //message delivered
-  if (data) {
-    data.chats.forEach((chat) => {
+  if (chats) {
+    if(chats.chats.length!==0){
+
+      chats.chats.forEach((chat) => {
       if (chat.status === "sent") {
         console.log(chat._id);
-        if (obj[receiverId]) {
-          socket.to(obj[receiverId]).emit("messageDelivered", chat._id);
+          if (obj[receiverId]) {
+            socket.to(obj[receiverId]).emit("messageDelivered", chat._id);
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   //count==0
@@ -51,6 +54,8 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
     );
     console.log("a", chatList);
   }
+
+  //chatlist
   if (role === "worker") {
     chatList = await WorkerChatList.findOne({ worker: userId }).populate({
       path: "users.user",

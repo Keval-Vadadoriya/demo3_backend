@@ -12,14 +12,7 @@ const connection = require("./socket-controller/connection");
 
 const io = socketIo(server, {
   cors: {
-    origin: [
-      `http://localhost:3000`,
-      `http://localhost:3002`,
-      `http://localhost:3003`,
-      "http://192.168.200.175:3000",
-      "http://192.168.200.36:3000",
-      'http://192.168.5.1:3000'
-    ],
+    origin: JSON.parse(process.env.SOCKET_PERMISSIONS),
     methods: ["GET", "POST"],
   },
 });

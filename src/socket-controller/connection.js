@@ -7,7 +7,6 @@ const delivered = require("./delivered");
 const obj = require("./users");
 
 const connection = (socket) => {
-  console.log("connected", socket.id);
   let userId;
   socket.on("setId", setId.bind(null, socket));
 
@@ -28,11 +27,8 @@ const connection = (socket) => {
 
   //seen
 
-  console.log(obj);
   socket.on("disconnect", () => {
-    // console.log("disconnected", obj[userId]);
     delete obj[userId];
-    // console.log(obj);
   });
 };
 

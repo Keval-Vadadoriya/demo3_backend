@@ -10,7 +10,8 @@ const getallprojects = async (req, res) => {
       if (req.role === "worker") {
         projects = await Project.find({ project_name: { $regex: search } });
       } else {
-        throw new Error("Unauthorized");
+    return res.status(401).send({ Error: "Unauthorized access" });
+    throw new Error("Unauthorized");
       }
     }
     const count = projects.length;
@@ -32,7 +33,6 @@ const getallprojects = async (req, res) => {
 
     res.send({ projects, count });
   } catch (e) {
-    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

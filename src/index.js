@@ -26,8 +26,8 @@ app.use(verifyrouter);
 //socket.io testings
 
 // io.use(function (socket, next) {
-//   var handshakeData = socket.request;
-//   console.log("middleware:", handshakeData._query["foo"]);
+//   var data = socket.request;
+//   console.log("middleware:", data._query["abc"]);
 //   next();
 // });
 

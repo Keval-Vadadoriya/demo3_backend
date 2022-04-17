@@ -5,7 +5,6 @@ const getmyprojects = async (req, res) => {
     let myProjects;
     myProjects = await Project.find({ owner: req.userId });
     const count = myProjects.length;
-    console.log(count);
     if (req.role === "user") {
       myProjects = await Project.find({ owner: req.userId })
         .sort({ createdAt: -1 })
@@ -13,7 +12,6 @@ const getmyprojects = async (req, res) => {
         .skip(req.query.skip);
     }
 
-    console.log(myProjects);
     if (myProjects.length === 0) {
       // throw new Error("No Workers Found");
       return res.send([]);
@@ -22,7 +20,6 @@ const getmyprojects = async (req, res) => {
     // res.send(myProjects);
     res.send({ myProjects, count });
   } catch (e) {
-    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

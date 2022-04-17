@@ -10,16 +10,18 @@ const sendEmail = async (otp, email) => {
     },
   });
 
+  try {
+    
   let info = await transporter.sendMail({
     from: "demoproject2608@gmail.com",
     // to: email,
     to: "keval.180410107122@gmail.com",
     subject: "Please confirm your Email account",
-    text: "Hello world?",
     html: "<h1>" + otp + "</h1>",
   });
 
-  console.log("Message sent: %s", info.messageId);
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  } catch (error) {
+    throw new Error(error.message)
+  }
 };
 module.exports = sendEmail;

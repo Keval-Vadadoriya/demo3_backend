@@ -6,7 +6,6 @@ const fs = require("fs");
 const editprofile = async (req, res) => {
   let user;
   try {
-    console.log(req.body);
 
     if (req.body.availability === "true") {
       req.body.availability = true;
@@ -28,7 +27,7 @@ const editprofile = async (req, res) => {
       
     }
     if (!user) {
-      throw new Error("no data found");
+      return res.status(404).send({Error:'data not fount'})
     }
 
     //

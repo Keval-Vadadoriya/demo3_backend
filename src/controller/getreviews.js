@@ -7,7 +7,6 @@ const getreviews = async (req, res) => {
     }).populate({
       path: "reviews.owner",
     });
-    console.log(review);
     if (!review) {
       throw new Error("No Reviews");
     }

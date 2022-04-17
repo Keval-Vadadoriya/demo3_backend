@@ -20,19 +20,16 @@ const getallworkers = async (req, res) => {
         .skip(req.query.skip);
     }
 
-    console.log(workers);
     if (workers.length === 0) {
       workers = [];
       // throw new Error("No Workers Found");
     }
-    console.log(req.query.skip);
     if (req.query.skip !== "0") {
       count = 0;
     }
 
     res.send({ workers, count });
   } catch (e) {
-    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

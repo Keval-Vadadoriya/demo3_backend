@@ -19,10 +19,9 @@ const auth = async (req, res, next) => {
 
     req.userId = decoded._id;
     req.role = decoded.role;
-    // req.user = user[0];
     next();
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(401).send(e.message);
   }
 };
 

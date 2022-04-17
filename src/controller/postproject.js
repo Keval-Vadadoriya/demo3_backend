@@ -11,7 +11,6 @@ const postproject = async (req, res) => {
 
     res.status(200).send(project);
   } catch (e) {
-    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

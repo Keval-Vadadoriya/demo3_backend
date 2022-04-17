@@ -10,7 +10,6 @@ const verifyUser = async (req, res) => {
       otp: req.params.otp,
     });
     if (verify) {
-      console.log("email is verified");
       user = await User.findOne({ _id: verify.user });
       if (!user) {
         user = await Worker.findOne({ _id: verify.user });
@@ -29,7 +28,6 @@ const verifyUser = async (req, res) => {
       throw new Error("Invalid Otp");
     }
   } catch (e) {
-    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

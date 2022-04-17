@@ -2,12 +2,11 @@ const WorkerChatList = require("../models/WorkerChatList");
 const UserChatList = require("../models/UserChatList");
 const Chats = require("../models/Chats");
 
-const addtochatlist = async (socket, userid, role, workerid,callback) => {
+const addtochatlist = async (socket, senderId, role, receiverId,callback) => {
   let list, chats;
-  const userId = role === "user" ? userid : workerid;
-  const workerId = role === "worker" ? userid : workerid;
+  const userId = role === "user" ? senderId : receiverId;
+  const workerId = role === "worker" ? senderId : receiverId;
 
-  console.log('im here')
 
   //add to user chat list
   list = await UserChatList.findOne({ user: userId });

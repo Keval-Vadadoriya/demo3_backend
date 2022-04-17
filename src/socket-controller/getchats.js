@@ -2,9 +2,8 @@ const obj = require("./users");
 const Chats = require("../models/Chats");
 const WorkerChatList = require("../models/WorkerChatList");
 const UserChatList = require("../models/UserChatList");
-const getchats = async (socket, userId, role, receiverId, callback) => {
+const getchats = async (socket,{ userId, role, receiverId}, callback) => {
   let chats, chatList;
-  console.log("sfsd");
   chats = await Chats.findOne({
     user: role === "user" ? userId : receiverId,
     worker: role === "user" ? receiverId : userId,
@@ -12,20 +11,12 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
     .populate({ path: "user", select: { name: 1, _id: 0, avatar: 1 } })
     .populate({ path: "worker", select: { name: 1, _id: 0, avatar: 1 } });
 
-  console.log("xy",chats);
-
-  // const data = await Chats.findOne({
-  //   user: role === "user" ? userId : receiverId,
-  //   worker: role === "user" ? receiverId : userId,
-  // });
-
   //message delivered
   if (chats) {
     if(chats.chats.length!==0){
 
       chats.chats.forEach((chat) => {
       if (chat.status === "sent") {
-        console.log(chat._id);
           if (obj[receiverId]) {
             socket.to(obj[receiverId]).emit("messageDelivered", chat._id);
           }
@@ -43,7 +34,6 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
       },
       { arrayFilters: [{ "x.user": receiverId }] }
     );
-    console.log("b", chatList);
   } else {
     chatList = await UserChatList.findOneAndUpdate(
       { user: userId },
@@ -52,7 +42,6 @@ const getchats = async (socket, userId, role, receiverId, callback) => {
       },
       { arrayFilters: [{ "x.user": receiverId }] }
     );
-    console.log("a", chatList);
   }
 
   //chatlist

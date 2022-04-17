@@ -43,7 +43,6 @@ const registerUser = async (req, res) => {
     sendEmail(otp, req.body.email);
     res.status(201).send({ _id: user._id });
   } catch (e) {
-    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

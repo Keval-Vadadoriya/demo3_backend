@@ -20,7 +20,6 @@ const getprofile = async (req, res) => {
 
     res.send({ user, role: req.role });
   } catch (e) {
-    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

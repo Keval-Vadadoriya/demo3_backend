@@ -5,14 +5,15 @@ const WorkerChatList = require("../models/WorkerChatList");
 
 const delivered = async (
   socket,
-  _id,
+  {
+  messageId,
   sender,
   receiver,
   role,
-  active,
+  active
+  },
   callback
 ) => {
-  console.log(active);
   let chatList;
   await Chats.findOneAndUpdate(
     {
@@ -20,10 +21,10 @@ const delivered = async (
       worker: role === "worker" ? sender : receiver,
     },
     { $set: { "chats.$[x].status": "delivered" } },
-    { arrayFilters: [{ "x._id": _id }] }
+    { arrayFilters: [{ "x._id": messageId }] }
   );
   if (obj[receiver]) {
-    socket.to(obj[sender]).emit("messageDelivered", _id);
+    socket.to(obj[sender]).emit("messageDelivered", messageId);
   }
 
   //count

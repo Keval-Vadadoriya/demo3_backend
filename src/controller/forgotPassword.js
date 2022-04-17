@@ -27,7 +27,6 @@ const forgotPassword = async (req, res) => {
     sendEmail(otp, req.body.email);
     res.status(200).send({});
   } catch (e) {
-    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

@@ -2,7 +2,7 @@ const obj = require("./users");
 const Chats = require("../models/Chats");
 const WorkerChatList = require("../models/WorkerChatList");
 const UserChatList = require("../models/UserChatList");
-const getchats = async (socket,{ userId, role, receiverId}, callback) => {
+const getchats = async (socket, { userId, role, receiverId }, callback) => {
   let chats, chatList;
   chats = await Chats.findOne({
     user: role === "user" ? userId : receiverId,
@@ -13,10 +13,9 @@ const getchats = async (socket,{ userId, role, receiverId}, callback) => {
 
   //message delivered
   if (chats) {
-    if(chats.chats.length!==0){
-
+    if (chats.chats.length !== 0) {
       chats.chats.forEach((chat) => {
-      if (chat.status === "sent") {
+        if (chat.status === "sent") {
           if (obj[receiverId]) {
             socket.to(obj[receiverId]).emit("messageDelivered", chat._id);
           }
@@ -34,7 +33,8 @@ const getchats = async (socket,{ userId, role, receiverId}, callback) => {
       },
       { arrayFilters: [{ "x.user": receiverId }] }
     );
-  } else {
+  }
+  if (role === "user") {
     chatList = await UserChatList.findOneAndUpdate(
       { user: userId },
       {

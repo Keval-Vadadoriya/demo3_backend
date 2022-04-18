@@ -57,17 +57,19 @@ const message = async (
   workerChatList["users"].unshift(user[0]);
   await workerChatList.save();
 
-
-    userChatList = await UserChatList.findOne({ user: role==='user'?sender :receiver}).populate({
-      path: "workers.user",
-      select: { name: 1, _id: 1, avatar: 1 },
-    });
-    workerChatList = await WorkerChatList.findOne({ worker: role==='user'?receiver:sender }).populate({
-      path: "users.user",
-      select: { name: 1, _id: 1, avatar: 1 },
-    });
-
-
+  //
+  userChatList = await UserChatList.findOne({
+    user: role === "user" ? sender : receiver,
+  }).populate({
+    path: "workers.user",
+    select: { name: 1, _id: 1, avatar: 1 },
+  });
+  workerChatList = await WorkerChatList.findOne({
+    worker: role === "user" ? receiver : sender,
+  }).populate({
+    path: "users.user",
+    select: { name: 1, _id: 1, avatar: 1 },
+  });
 
   //callback
   callback({
@@ -81,7 +83,10 @@ const message = async (
       .emit("message", { message, role, sender, receiver });
     socket
       .to(obj[receiver])
-      .emit("chatlist", role === "user" ?   workerChatList.users : userChatList.workers);
+      .emit(
+        "chatlist",
+        role === "user" ? workerChatList.users : userChatList.workers
+      );
   }
 };
 module.exports = message;

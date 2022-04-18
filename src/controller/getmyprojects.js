@@ -13,7 +13,6 @@ const getmyprojects = async (req, res) => {
     }
 
     if (myProjects.length === 0) {
-      // throw new Error("No Workers Found");
       return res.send([]);
     }
 

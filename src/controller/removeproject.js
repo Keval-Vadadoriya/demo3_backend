@@ -8,6 +8,9 @@ const removeproject = async (req, res) => {
         _id: req.params.projectid,
         owner: req.userId,
       });
+    }else{
+      return res.status(401).send({Error:"Unauthorized access"})
+
     }
 
     res.status(200).send(project);

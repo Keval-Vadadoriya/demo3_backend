@@ -11,7 +11,6 @@ const getallprojects = async (req, res) => {
         projects = await Project.find({ project_name: { $regex: search } });
       } else {
     return res.status(401).send({ Error: "Unauthorized access" });
-    throw new Error("Unauthorized");
       }
     }
     const count = projects.length;
@@ -28,7 +27,6 @@ const getallprojects = async (req, res) => {
 
     if (projects.length === 0) {
       projects = [];
-      // throw new Error("No Workers Found");
     }
 
     res.send({ projects, count });

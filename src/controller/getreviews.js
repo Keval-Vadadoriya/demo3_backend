@@ -8,7 +8,7 @@ const getreviews = async (req, res) => {
       path: "reviews.owner",
     });
     if (!review) {
-      throw new Error("No Reviews");
+        return res.status(404).send('no data found')
     }
     const reviews = review.reviews.reverse();
     res.send(reviews);

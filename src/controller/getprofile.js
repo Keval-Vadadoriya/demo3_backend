@@ -8,13 +8,13 @@ const getprofile = async (req, res) => {
     if (req.role === "user") {
       user = await User.findOne({ _id: req.userId });
       if (!user) {
-        throw new Error("no user found");
+        return res.status(404).send('no user found')
       }
     }
     if (req.role === "worker") {
       user = await Worker.findOne({ _id: req.userId });
       if (!user) {
-        throw new Error("no worker found");
+        return res.status(404).send('no worker found')
       }
     }
 

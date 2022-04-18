@@ -22,7 +22,6 @@ const getallworkers = async (req, res) => {
 
     if (workers.length === 0) {
       workers = [];
-      // throw new Error("No Workers Found");
     }
     if (req.query.skip !== "0") {
       count = 0;

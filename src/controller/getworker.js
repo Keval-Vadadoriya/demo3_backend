@@ -4,7 +4,7 @@ const getworker = async (req, res) => {
   try {
     const worker = await Worker.findOne({ _id: req.params.workerId });
     if (!worker) {
-      throw new Error("No Worker Found");
+        return res.status(404).send('no Worker found')
     }
     res.send(worker);
   } catch (e) {

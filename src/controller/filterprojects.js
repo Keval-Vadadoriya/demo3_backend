@@ -4,19 +4,8 @@ const Project = require("../models/Project");
 const filterprojects = async (req, res) => {
   try {
     let projects, count;
-    // if (req.role === "worker") {
-    //   if (req.query.money || Number(req.query.money) === 0) {
-    //     const parameters = JSON.parse(JSON.stringify(req.query));
-    //     delete parameters.money;
-    //     projects = await Project.find({
-    //       money: { $gte: req.query.money },
-    //       ...parameters,
-    //     });
-    //   } else {
-    //     projects = await Project.find(req.query);
-    //   }
-    // }
-        projects = await Project.find(req.query);
+
+    projects = await Project.find(req.query);
 
     count = projects.length;
     if (req.role === "worker") {

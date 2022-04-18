@@ -15,7 +15,7 @@ const loginUser = async (req, res) => {
       role = "worker";
     }
     if (!user) {
-      throw new Error("Invalid Email");
+        return res.status(404).send('Invalid Email')
     }
 
     if (user.active === false) {

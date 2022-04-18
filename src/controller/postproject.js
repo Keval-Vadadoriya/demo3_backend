@@ -5,11 +5,13 @@ const postproject = async (req, res) => {
     if (req.role === "user") {
       req.body.owner = req.userId;
       project = new Project(req.body);
+    }else{
+      return res.status(401).send({Error:"Unauthorized access"})
     }
 
     await project.save();
 
-    res.status(200).send(project);
+    res.status(201).send(project);
   } catch (e) {
     res.status(400).send({ Error: e.message });
   }

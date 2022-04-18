@@ -14,9 +14,7 @@ const editprofile = async (req, res) => {
       req.body.availability = false;
     }
 
-    if (req.file) {
-      req.body.avatar = `uploads/${req.file.filename}`;
-    }
+    
 
     //find
     if (req.role === "user") {
@@ -30,7 +28,7 @@ const editprofile = async (req, res) => {
       return res.status(404).send({Error:'data not fount'})
     }
 
-    //
+    //hashing password
     if (req.body.password && req.body.newpassword) {
       if (req.body.newpassword.length < 7) {
         throw new Error("Too Short");
@@ -42,6 +40,11 @@ const editprofile = async (req, res) => {
       req.body.password = req.body.newpassword;
       delete req.body.newpassword;
       req.body.password = await bcrypt.hash(req.body.password, 8);
+    }
+
+    
+    if (req.file) {
+      req.body.avatar = `uploads/${req.file.filename}`;
     }
     if (req.body.avatar && user.avatar !== "uploads/default.jpg") {
       fs.unlinkSync(user.avatar);

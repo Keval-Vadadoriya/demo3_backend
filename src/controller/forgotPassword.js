@@ -25,7 +25,7 @@ const forgotPassword = async (req, res) => {
     const verify = new VerifyPassword({ otp: otp, user: user._id });
     verify.save();
     sendEmail(otp, req.body.email);
-    res.status(200).send({});
+    res.status(200).send();
   } catch (e) {
     res.status(400).send({ Error: e.message });
   }

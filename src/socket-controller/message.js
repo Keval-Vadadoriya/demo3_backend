@@ -9,7 +9,7 @@ const message = async (
   { message, sender, receiver, role },
   callback
 ) => {
-  let chatlist, chatlist2;
+  let userChatList, workerChatList;
   //message
   var _id = new mongoose.Types.ObjectId();
   message._id = _id;
@@ -29,61 +29,51 @@ const message = async (
 
   //sorting  user chatlist
 
-  chatlist = await UserChatList.findOne({
+  userChatList = await UserChatList.findOne({
     user: role === "user" ? sender : receiver,
   });
-  let index = chatlist["workers"].findIndex(
+  let index = userChatList["workers"].findIndex(
     (worker) => worker.user.toString() === (role === "user" ? receiver : sender)
   );
-  const worker = chatlist["workers"].splice(index, 1);
+  const worker = userChatList["workers"].splice(index, 1);
   if (role === "worker") {
     worker[0].count = worker[0].count + 1;
   }
-  chatlist["workers"].unshift(worker[0]);
-  await chatlist.save();
+  userChatList["workers"].unshift(worker[0]);
+  await userChatList.save();
 
   //sorting worker chatlist
-  chatlist2 = await WorkerChatList.findOne({
+  workerChatList = await WorkerChatList.findOne({
     worker: role === "user" ? receiver : sender,
   });
-  index = chatlist2["users"].findIndex(
+  index = workerChatList["users"].findIndex(
     (user) => user.user.toString() === (role === "user" ? sender : receiver)
   );
-  const user = chatlist2["users"].splice(index, 1);
+  const user = workerChatList["users"].splice(index, 1);
   if (role === "user") {
     user[0].count = user[0].count + 1;
   }
 
-  chatlist2["users"].unshift(user[0]);
-  await chatlist2.save();
+  workerChatList["users"].unshift(user[0]);
+  await workerChatList.save();
 
-  if (role === "user") {
-    chatlist = await UserChatList.findOne({ user: sender }).populate({
+
+    userChatList = await UserChatList.findOne({ user: role==='user'?sender :receiver}).populate({
       path: "workers.user",
       select: { name: 1, _id: 1, avatar: 1 },
     });
-    chatlist2 = await WorkerChatList.findOne({ worker: receiver }).populate({
+    workerChatList = await WorkerChatList.findOne({ worker: role==='user'?receiver:sender }).populate({
       path: "users.user",
       select: { name: 1, _id: 1, avatar: 1 },
     });
-  } else {
-    chatlist = await WorkerChatList.findOne({ worker: sender }).populate({
-      path: "users.user",
-      select: { name: 1, _id: 1, avatar: 1 },
-    });
-    chatlist2 = await UserChatList.findOne({ user: receiver }).populate({
-      path: "workers.user",
-      select: { name: 1, _id: 1, avatar: 1 },
-    });
-  }
 
-  //count++
+
 
   //callback
   callback({
     status: "sent",
     message,
-    chatlist: chatlist[role === "user" ? "workers" : "users"],
+    chatlist: role === "user" ? userChatList.workers : workerChatList.users,
   });
   if (obj[receiver]) {
     socket
@@ -91,7 +81,7 @@ const message = async (
       .emit("message", { message, role, sender, receiver });
     socket
       .to(obj[receiver])
-      .emit("chatlist", chatlist2[role === "user" ? "users" : "workers"]);
+      .emit("chatlist", role === "user" ?   workerChatList.users : userChatList.workers);
   }
 };
 module.exports = message;

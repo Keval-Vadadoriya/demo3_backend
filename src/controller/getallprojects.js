@@ -3,19 +3,19 @@ const Project = require("../models/Project");
 const getallprojects = async (req, res) => {
   try {
     let projects, search;
-    if (req.params.search === "null") {
+    if (req.query.search === "null") {
       projects = await Project.find();
     } else {
-      search = new RegExp(req.params.search, "i");
+      search = new RegExp(req.query.search, "i");
       if (req.role === "worker") {
         projects = await Project.find({ project_name: { $regex: search } });
       } else {
-    return res.status(401).send({ Error: "Unauthorized access" });
+        return res.status(401).send({ Error: "Unauthorized access" });
       }
     }
     const count = projects.length;
 
-    if (req.params.search === "null") {
+    if (req.query.search === "null") {
       projects = await Project.find()
         .limit(req.query.limit)
         .skip(req.query.skip);

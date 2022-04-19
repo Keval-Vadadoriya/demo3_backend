@@ -81,7 +81,7 @@ router.get("/getprofile", auth, getprofile);
 router.get("/getreview/:workerId", auth, getreviews);
 
 //get all workers
-router.get("/getallworkers/:search", auth, getallworkers);
+router.get("/getallworkers", auth, getallworkers);
 
 //get worker
 router.get("/getworker/:workerId", auth, getworker);
@@ -95,7 +95,7 @@ router.get("/filterworkers", auth, filterworkers);
 router.post("/project", auth, postproject);
 
 //get all project
-router.get("/getallprojects/:search", auth, getallprojects);
+router.get("/getallprojects", auth, getallprojects);
 
 //my projects
 router.get("/getmyprojects", auth, getmyprojects);

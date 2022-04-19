@@ -4,15 +4,15 @@ const getallworkers = async (req, res) => {
   try {
     let workers, search;
 
-    if (req.params.search === "null") {
+    if (req.query.search === "null") {
       workers = await Worker.find();
     } else {
-      search = new RegExp(req.params.search, "i");
+      search = new RegExp(req.query.search, "i");
 
       workers = await Worker.find({ name: { $regex: search } });
     }
     let count = workers.length;
-    if (req.params.search === "null") {
+    if (req.query.search === "null") {
       workers = await Worker.find().limit(req.query.limit).skip(req.query.skip);
     } else {
       workers = await Worker.find({ name: { $regex: search } })

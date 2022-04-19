@@ -6,12 +6,7 @@ const verifySchema = mongoose.Schema({
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    // refPath: "role",
   },
-  //   role: {
-  //     type: String,
-  //     enum: ["User", "Worker"],
-  //   },
 });
 
 const Verify = mongoose.model("Verify", verifySchema);

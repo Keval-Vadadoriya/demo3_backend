@@ -23,6 +23,7 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.json());
 app.use(router);
 app.use(verifyrouter);
+
 //socket.io testings
 
 // io.use(function (socket, next) {

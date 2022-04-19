@@ -22,11 +22,6 @@ const reviewSchema = mongoose.Schema({
     },
   ],
 });
-// reviewSchema.path('reviews.owner').validate(function(value, respond) {
-//   mongoose.models["Review"].findOne({ reviews.owner: value }, function(err, exists) {
-//     respond(!!exists);
-//   });
-// }, 'Profile ID already exists');
 
 const Review = mongoose.model("Review", reviewSchema);
 

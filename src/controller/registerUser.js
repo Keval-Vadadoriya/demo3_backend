@@ -12,7 +12,6 @@ const registerUser = async (req, res) => {
       specialChars: false,
     });
 
-    //orginal
     let user;
     if (req.query.role === "worker") {
       const exist = await User.findOne({ email: req.body.email });

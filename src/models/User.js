@@ -48,7 +48,6 @@ userSchema.methods.toJSON = function () {
   const user = this;
   const userObj = user.toObject();
   delete userObj.password;
-  delete userObj.tokens;
 
   return userObj;
 };
@@ -56,9 +55,7 @@ userSchema.methods.toJSON = function () {
 //Checking Credentials
 userSchema.statics.verifyUser = async (email, password) => {
   const user = await User.findOne({ email });
-  // if (!user) {
-  //   throw new Error("Invalid Email");
-  // }
+
   if (user) {
     const ismatch = await bcrypt.compare(password, user.password);
 

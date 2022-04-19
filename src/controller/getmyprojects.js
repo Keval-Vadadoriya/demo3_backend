@@ -16,7 +16,6 @@ const getmyprojects = async (req, res) => {
       return res.send([]);
     }
 
-    // res.send(myProjects);
     res.send({ myProjects, count });
   } catch (e) {
     res.status(400).send({ Error: e.message });

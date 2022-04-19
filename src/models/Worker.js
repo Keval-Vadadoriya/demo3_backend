@@ -70,7 +70,6 @@ workerSchema.methods.toJSON = function () {
   user = this;
   const userObj = user.toObject();
   delete userObj.password;
-  delete userObj.tokens;
 
   return userObj;
 };
@@ -78,9 +77,6 @@ workerSchema.methods.toJSON = function () {
 //Checking Credentials
 workerSchema.statics.verifyWorker = async (email, password) => {
   const user = await Worker.findOne({ email });
-  // if (!user) {
-  //   throw new Error("Invalid Email");
-  // }
 
   if (user) {
     const ismatch = await bcrypt.compare(password, user.password);

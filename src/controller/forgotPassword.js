@@ -6,7 +6,6 @@ const VerifyPassword = require("../models/VerifyPassword");
 
 const forgotPassword = async (req, res) => {
   try {
-    //orginal
     let user;
     user = await Worker.findOne({ email: req.body.email });
     if (!user) {

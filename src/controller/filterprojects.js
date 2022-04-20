@@ -2,12 +2,13 @@ const Project = require("../models/Project");
 
 const filterprojects = async (req, res) => {
   try {
-    let projects, count;
-
-    projects = await Project.find(req.query);
-
-    count = projects.length;
     if (req.role === "worker") {
+      let projects, count;
+
+      projects = await Project.find(req.query);
+
+      count = projects.length;
+
       if (req.query.sort === "latest") {
         projects = await Project.find(req.query)
           .sort({ createdAt: -1 })
@@ -33,15 +34,17 @@ const filterprojects = async (req, res) => {
           .limit(req.query.limit)
           .skip(req.query.skip);
       }
-    }
-    if (Number(req.query.skip) !== 0) {
-      count = 0;
-    }
+      if (Number(req.query.skip) !== 0) {
+        count = 0;
+      }
 
-    if (projects.length === 0) {
-      return res.send({ projects: [], count: 0 });
+      if (projects.length === 0) {
+        return res.send({ projects: [], count: 0 });
+      }
+      res.send({ projects, count });
+    } else {
+      return res.status(401).send({ Error: "Unauthorized access" });
     }
-    res.send({ projects, count });
   } catch (e) {
     res.status(400).send({ Error: e.message });
   }

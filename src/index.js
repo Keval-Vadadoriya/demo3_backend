@@ -1,12 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const router = require("./router/Router");
+const router = require("./router/workers-router");
 const verifyrouter = require("./router/verifyrouter");
 const http = require("http");
 const server = http.createServer(app);
 const socketIo = require("socket.io");
 const path = require("path");
+const projectsRouter = require("./router/projects-router");
 
 const connection = require("./socket-controller/connection");
 
@@ -22,6 +23,7 @@ app.use(cors());
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.json());
 app.use(router);
+app.use(projectsRouter);
 app.use(verifyrouter);
 
 //socket.io testings

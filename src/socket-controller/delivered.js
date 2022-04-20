@@ -5,13 +5,7 @@ const WorkerChatList = require("../models/WorkerChatList");
 
 const delivered = async (
   socket,
-  {
-  messageId,
-  sender,
-  receiver,
-  role,
-  active
-  },
+  { messageId, sender, receiver, role, active },
   callback
 ) => {
   let chatList;

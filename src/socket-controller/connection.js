@@ -25,7 +25,6 @@ const connection = (socket) => {
   //Delivered
   socket.on("delivered", delivered.bind(null, socket));
 
-
   socket.on("disconnect", () => {
     delete obj[userId];
   });

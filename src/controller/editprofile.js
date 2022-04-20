@@ -6,7 +6,6 @@ const fs = require("fs");
 const editprofile = async (req, res) => {
   let user;
   try {
-
     if (req.body.availability === "true") {
       req.body.availability = true;
     }
@@ -14,18 +13,15 @@ const editprofile = async (req, res) => {
       req.body.availability = false;
     }
 
-    
-
     //find
     if (req.role === "user") {
       user = await User.findOne({ _id: req.userId });
     }
     if (req.role === "worker") {
       user = await Worker.findOne({ _id: req.userId });
-      
     }
     if (!user) {
-      return res.status(404).send({Error:'data not fount'})
+      return res.status(404).send({ Error: "data not fount" });
     }
 
     //hashing password
@@ -42,7 +38,6 @@ const editprofile = async (req, res) => {
       req.body.password = await bcrypt.hash(req.body.password, 8);
     }
 
-    
     if (req.file) {
       req.body.avatar = `uploads/${req.file.filename}`;
     }

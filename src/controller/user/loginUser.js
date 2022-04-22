@@ -1,8 +1,8 @@
-const User = require("../models/User");
-const Worker = require("../models/Worker");
+const User = require("../../models/User");
+const Worker = require("../../models/Worker");
 const otpGenerator = require("otp-generator");
-const sendEmail = require("../extra/sendEmail");
-const Verify = require("../models/Verify");
+const sendEmail = require("../../helper/sendEmail");
+const Verify = require("../../models/Verify");
 
 const loginUser = async (req, res) => {
   try {
@@ -15,7 +15,7 @@ const loginUser = async (req, res) => {
       role = "worker";
     }
     if (!user) {
-        return res.status(404).send('Invalid Email')
+      return res.status(404).send("Invalid Email");
     }
 
     if (user.active === false) {

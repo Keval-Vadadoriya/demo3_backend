@@ -1,9 +1,9 @@
-const User = require("../models/User");
-const Worker = require("../models/Worker");
-const Review = require("../models/Review");
-const Verify = require("../models/Verify");
+const User = require("../../models/User");
+const Worker = require("../../models/Worker");
+const Review = require("../../models/Review");
+const Verify = require("../../models/Verify");
 const otpGenerator = require("otp-generator");
-const sendEmail = require("../extra/sendEmail");
+const sendEmail = require("../../helper/sendEmail");
 
 const registerUser = async (req, res) => {
   try {

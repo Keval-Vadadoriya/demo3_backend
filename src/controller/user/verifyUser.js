@@ -1,6 +1,6 @@
-const Worker = require("../models/Worker");
-const User = require("../models/User");
-const Verify = require("../models/Verify");
+const Worker = require("../../models/Worker");
+const User = require("../../models/User");
+const Verify = require("../../models/Verify");
 
 const verifyUser = async (req, res) => {
   try {

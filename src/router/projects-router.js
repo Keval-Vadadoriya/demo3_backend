@@ -6,11 +6,11 @@ const auth = require("../middleware/Auth");
 
 //controllers
 
-const postproject = require("../controller/postproject");
-const getallprojects = require("../controller/getallprojects");
-const getmyprojects = require("../controller/getmyprojects");
-const filterprojects = require("../controller/filterprojects");
-const removeproject = require("../controller/removeproject");
+const postproject = require("../controller/projects/postproject");
+const getallprojects = require("../controller/projects/getallprojects");
+const getmyprojects = require("../controller/projects/getmyprojects");
+const filterprojects = require("../controller/projects/filterprojects");
+const removeproject = require("../controller/projects/removeproject");
 const projectsRouter = express.Router();
 
 //post project

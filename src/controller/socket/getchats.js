@@ -1,7 +1,7 @@
 const obj = require("./users");
-const Chats = require("../models/Chats");
-const WorkerChatList = require("../models/WorkerChatList");
-const UserChatList = require("../models/UserChatList");
+const Chats = require("../../models/Chats");
+const WorkerChatList = require("../../models/WorkerChatList");
+const UserChatList = require("../../models/UserChatList");
 const getchats = async (socket, { userId, role, receiverId }, callback) => {
   let chats, chatList;
   chats = await Chats.findOne({

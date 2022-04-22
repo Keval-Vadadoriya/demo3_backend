@@ -1,6 +1,6 @@
-const Worker = require("../models/Worker");
-const User = require("../models/User");
-const VerifyPassword = require("../models/VerifyPassword");
+const Worker = require("../../models/Worker");
+const User = require("../../models/User");
+const VerifyPassword = require("../../models/VerifyPassword");
 const bcrypt = require("bcrypt");
 
 const verifyPassword = async (req, res) => {

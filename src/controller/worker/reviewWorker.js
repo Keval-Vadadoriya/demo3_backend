@@ -1,5 +1,5 @@
-const Worker = require("../models/Worker");
-const Review = require("../models/Review");
+const Worker = require("../../models/Worker");
+const Review = require("../../models/Review");
 const { default: mongoose } = require("mongoose");
 const reviewWorker = async (req, res) => {
   try {

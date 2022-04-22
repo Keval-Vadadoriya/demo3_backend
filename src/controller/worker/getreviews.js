@@ -1,4 +1,4 @@
-const Review = require("../models/Review");
+const Review = require("../../models/Review");
 
 const getreviews = async (req, res) => {
   try {
@@ -8,7 +8,7 @@ const getreviews = async (req, res) => {
       path: "reviews.owner",
     });
     if (!review) {
-        return res.status(404).send('no data found')
+      return res.status(404).send("no data found");
     }
     const reviews = review.reviews.reverse();
     res.send(reviews);

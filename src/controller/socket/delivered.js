@@ -1,7 +1,7 @@
 const obj = require("./users");
-const Chats = require("../models/Chats");
-const UserChatList = require("../models/UserChatList");
-const WorkerChatList = require("../models/WorkerChatList");
+const Chats = require("../../models/Chats");
+const UserChatList = require("../../models/UserChatList");
+const WorkerChatList = require("../../models/WorkerChatList");
 
 const delivered = async (
   socket,

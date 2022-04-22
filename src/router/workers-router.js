@@ -5,11 +5,11 @@ const express = require("express");
 const auth = require("../middleware/Auth");
 
 //controllers
-const reviewWorker = require("../controller/reviewWorker");
-const getreviews = require("../controller/getreviews");
-const getallworkers = require("../controller/getallworkers");
-const filterworkers = require("../controller/filterworkers");
-const getworker = require("../controller/getworker");
+const reviewWorker = require("../controller/worker/reviewWorker");
+const getreviews = require("../controller/worker/getreviews");
+const getallworkers = require("../controller/worker/getallworkers");
+const filterworkers = require("../controller/worker/filterworkers");
+const getworker = require("../controller/worker/getworker");
 
 const router = express.Router();
 
@@ -20,12 +20,6 @@ router.get("/", async (req, res) => {
 
 //Reviews
 router.post("/review/:workerId", auth, reviewWorker);
-
-// //edit profile
-// router.patch("/editprofile/:id", [uploadFile, auth], editprofile);
-
-// //get profile
-// router.get("/getprofile", auth, getprofile);
 
 //get all reviews
 router.get("/getreview/:workerId", auth, getreviews);

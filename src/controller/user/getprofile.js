@@ -1,5 +1,5 @@
-const Worker = require("../models/Worker");
-const User = require("../models/User");
+const Worker = require("../../models/Worker");
+const User = require("../../models/User");
 
 const getprofile = async (req, res) => {
   let user;
@@ -8,13 +8,13 @@ const getprofile = async (req, res) => {
     if (req.role === "user") {
       user = await User.findOne({ _id: req.userId });
       if (!user) {
-        return res.status(404).send('no user found')
+        return res.status(404).send("no user found");
       }
     }
     if (req.role === "worker") {
       user = await Worker.findOne({ _id: req.userId });
       if (!user) {
-        return res.status(404).send('no worker found')
+        return res.status(404).send("no worker found");
       }
     }
 

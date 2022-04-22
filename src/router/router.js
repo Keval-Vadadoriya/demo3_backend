@@ -8,15 +8,15 @@ const path = require("path");
 const multer = require("multer");
 
 //controllers
-const registerUser = require("../controller/registerUser");
-const verifyUser = require("../controller/verifyUser");
-const verifyPassword = require("../controller/verifyPassword");
-const forgotPassword = require("../controller/forgotPassword");
-const loginUser = require("../controller/loginUser");
-const editprofile = require("../controller/editprofile");
-const getprofile = require("../controller/getprofile");
+const registerUser = require("../controller/user/registerUser");
+const verifyUser = require("../controller/user/verifyUser");
+const verifyPassword = require("../controller/user/verifyPassword");
+const forgotPassword = require("../controller/user/forgotPassword");
+const loginUser = require("../controller/user/loginUser");
+const editprofile = require("../controller/user/editprofile");
+const getprofile = require("../controller/user/getprofile");
 
-const verifyrouter = express.Router();
+const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -58,24 +58,24 @@ const uploadFile = async (req, res, next) => {
 };
 
 //edit profile
-verifyrouter.patch("/editprofile/:id", [uploadFile, auth], editprofile);
+router.patch("/editprofile/:id", [uploadFile, auth], editprofile);
 
 //get profile
-verifyrouter.get("/getprofile", auth, getprofile);
+router.get("/getprofile", auth, getprofile);
 
 //register user
-verifyrouter.post("/signup", registerUser);
+router.post("/signup", registerUser);
 
 //login user
-verifyrouter.post("/login", loginUser);
+router.post("/login", loginUser);
 
 //verify user
-verifyrouter.post("/verify/:otp", verifyUser);
+router.post("/verify/:otp", verifyUser);
 
 //verify password
-verifyrouter.post("/verifyPassword/:otp", verifyPassword);
+router.post("/verifyPassword/:otp", verifyPassword);
 
 //forgot password
-verifyrouter.post("/forgotPassword", forgotPassword);
+router.post("/forgotPassword", forgotPassword);
 
-module.exports = verifyrouter;
+module.exports = router;

@@ -1,7 +1,7 @@
-const Chats = require("../models/Chats");
-const WorkerChatList = require("../models/WorkerChatList");
+const Chats = require("../../models/Chats");
+const WorkerChatList = require("../../models/WorkerChatList");
 const obj = require("./users");
-const UserChatList = require("../models/UserChatList");
+const UserChatList = require("../../models/UserChatList");
 const mongoose = require("mongoose");
 
 const message = async (

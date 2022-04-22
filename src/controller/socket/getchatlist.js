@@ -1,5 +1,5 @@
-const WorkerChatList = require("../models/WorkerChatList");
-const UserChatList = require("../models/UserChatList");
+const WorkerChatList = require("../../models/WorkerChatList");
+const UserChatList = require("../../models/UserChatList");
 const getchatlist = async (socket, { userId, role }) => {
   //chatlist
   let list;

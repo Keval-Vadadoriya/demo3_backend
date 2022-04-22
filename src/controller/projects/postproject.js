@@ -1,4 +1,4 @@
-const Project = require("../models/Project");
+const Project = require("../../models/Project");
 const postproject = async (req, res) => {
   try {
     if (req.role === "user") {

@@ -1,8 +1,8 @@
-const User = require("../models/User");
-const Worker = require("../models/Worker");
+const User = require("../../models/User");
+const Worker = require("../../models/Worker");
 const otpGenerator = require("otp-generator");
-const sendEmail = require("../extra/sendEmail");
-const VerifyPassword = require("../models/VerifyPassword");
+const sendEmail = require("../../helper/sendEmail");
+const VerifyPassword = require("../../models/VerifyPassword");
 
 const forgotPassword = async (req, res) => {
   try {

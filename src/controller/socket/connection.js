@@ -7,7 +7,7 @@ const delivered = require("./delivered");
 const obj = require("./users");
 
 const connection = (socket) => {
-  let userId;
+  let userId = socket.id;
   socket.on("setId", setId.bind(null, socket));
 
   //getchats
@@ -25,8 +25,19 @@ const connection = (socket) => {
   //Delivered
   socket.on("delivered", delivered.bind(null, socket));
 
+  //disconnect
+  socket.on("disconnectn", (id) => {
+    console.log("sdfd", obj);
+    delete obj[id];
+    console.log("dsfsd", obj);
+  });
+
   socket.on("disconnect", () => {
+    console.log("user", userId);
+    console.log("1", obj);
+
     delete obj[userId];
+    console.log("2", obj);
   });
 };
 

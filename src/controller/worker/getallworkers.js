@@ -25,6 +25,7 @@ const getallworkers = async (req, res) => {
 
       if (workers.length === 0) {
         workers = [];
+        count = 1;
       }
       if (req.query.skip !== "0") {
         count = 0;

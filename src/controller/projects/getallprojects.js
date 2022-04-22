@@ -24,6 +24,7 @@ const getallprojects = async (req, res) => {
 
       if (projects.length === 0) {
         projects = [];
+        count = 1;
       }
 
       res.send({ projects, count });

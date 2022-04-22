@@ -39,7 +39,7 @@ const filterprojects = async (req, res) => {
       }
 
       if (projects.length === 0) {
-        return res.send({ projects: [], count: 0 });
+        return res.send({ projects: [], count: 1 });
       }
       res.send({ projects, count });
     } else {

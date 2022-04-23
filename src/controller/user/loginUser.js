@@ -30,8 +30,10 @@ const loginUser = async (req, res) => {
     }
 
     const token = await user.generateAuthToken(role);
+    console.log(user, token, role);
     res.send({ user, token, role });
   } catch (e) {
+    console.log(e.message);
     res.status(400).send({ Error: e.message });
   }
 };

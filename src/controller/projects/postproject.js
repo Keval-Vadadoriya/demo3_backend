@@ -8,7 +8,9 @@ const postproject = async (req, res) => {
 
       await project.save();
 
-      res.status(201).send(project);
+      const projects = await Project.find().sort({ createdAt: -1 });
+
+      res.status(201).send({ projects });
     } else {
       return res.status(401).send({ Error: "Unauthorized access" });
     }
